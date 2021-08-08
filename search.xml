@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>note</title>
+      <link href="/2021/08/03/note/"/>
+      <url>/2021/08/03/note/</url>
+      
+        <content type="html"><![CDATA[<h1 id="业务"><a href="#业务" class="headerlink" title="业务"></a>业务</h1><h2 id="分享"><a href="#分享" class="headerlink" title="分享"></a>分享</h2><ol><li>生成分享链接-&gt;根据活动id获取分享配置,如果分享,添加shareTag标识-&gt;如果链接包含?shareId=xxx,去掉这部分重新拼接长链接-&gt;获取用户登录信息,未登录直接生成短链接返回-&gt;已登录,通过活动ID和账户ID在分享表中获取分享记录-&gt;如果分享记录存在，并且长链一致，返回对应短链；否则重新生成短链，记录分享表</li></ol><pre><code>入参:    {      &quot;activityId&quot;: &quot;4ciL15mIpKZuSUWcfnNyqEtbHWmwnpZSJcy2u2XdqzU\u003d&quot;,      &quot;title&quot;: &quot;55av54uC56CN5Lu3&quot;,      &quot;url&quot;: &quot;/cutPrice.html?   title\u003d55av54uC56CN5Lu3\u0026activityId\u003d4ciL15mIpKZuSUWcfnNyqEtbHWmwnpZSJcy2u2Xdq zU\u003d#/cutDetail? activityId\u003d4ciL15mIpKZuSUWcfnNyqEtbHWmwnpZSJcy2u2XdqzU%3D\u0026goodsId\u003d1115712\u   0026groupId\u003d1044601&quot;    }出参:    &quot;data&quot;: {        &quot;shareTag&quot;: &quot;N&quot;,        &quot;sharePic&quot;: &quot;&quot;,        &quot;shareTitle&quot;: &quot;页面标题&quot;,        &quot;shareUrl&quot;: &quot;/dwz/7VfM7f&quot;,        &quot;shareDesc&quot;: &quot;注页面及分享信息请遵守微信朋友圈管理规定，请勿出现违规信息，否则有可能导致活动分  享到朋友圈仅自己可见&quot;      }</code></pre><ol start="2"><li>短链接访问-&gt;根据短链接查找长链接-&gt;根据短链接paramId查找分享链接,如果paramId关联分享活动-&gt;url最后拼接上&amp;shareId=分享人</li></ol><ol start="3"><li>微信登录跳转轨迹<pre><code>获取微信网页授权的完整URL为:授权完整地址为：==&gt; https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbd8120fb97e3f871&amp;redirect_uri=https%3A%2F%2Ft.hualedou.cn%2Fmarket-gateweb%2FweChat%2FgetOpenId&amp;response_type=code&amp;scope=snsapi_userinfo&amp;state=111029777#wechat_redirect</code></pre></li></ol><p>授权通过，页面重定向至 :===&gt; <a href="https://t.hualedou.cn/market-mobile/autoLogin?ticket=375e5d31cc1041b09c0322f3806b3a29" target="_blank" rel="noopener">https://t.hualedou.cn/market-mobile/autoLogin?ticket=375e5d31cc1041b09c0322f3806b3a29</a></p><p>开始将页面重定向至 :===&gt; <a href="https://t.hualedou.cn/market-h5/scratchCard.html?title=5Yiu5Yiu5LmQ&amp;activityId=I*mR*mRHQkLVLsrDWAAv2OE1Rc6/94aHhOKfKQ58d3E=#/?_randm=6ef22aad62414bd4af1571c35faf7219" target="_blank" rel="noopener">https://t.hualedou.cn/market-h5/scratchCard.html?title=5Yiu5Yiu5LmQ&amp;activityId=I*mR*mRHQkLVLsrDWAAv2OE1Rc6/94aHhOKfKQ58d3E=#/?_randm=6ef22aad62414bd4af1571c35faf7219</a></p><pre><code>select DATE_FORMAT(a.timeDay, &#39;%Y/%m/%d&#39;) as time    , ifnull(b.shareNum, 0) as shareNum    , ifnull(b.shareCount, 0) as shareCount    , ifnull(b.newUserNum, 0) as newUserNumfrom (    select &#39;2021-07-30&#39; as timeDay    union all    select &#39;2021-07-31&#39; as timeDay    union all    select &#39;2021-08-01&#39; as timeDay    union all    select &#39;2021-08-02&#39; as timeDay    union all    select &#39;2021-08-03&#39; as timeDay    union all    select &#39;2021-08-04&#39; as timeDay    union all    select &#39;2021-08-05&#39; as timeDay) a    left join (        select DATE_FORMAT(create_time, &#39;%Y/%m/%d&#39;) as dayTime, count(account_id) as shareNum            , count(DISTINCT account_id) as shareCount, sum(is_new_user) as newUserNum        from tf_acc_share_record o        where activity_id = &#39;10029064816&#39;        group by o.create_time    ) b    on DATE_FORMAT(a.timeDay, &#39;%Y/%m/%d&#39;) = b.dayTime;</code></pre>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>bug汇总</title>
+      <link href="/2021/08/02/bug/"/>
+      <url>/2021/08/02/bug/</url>
+      
+        <content type="html"><![CDATA[<h1 id="bug汇总"><a href="#bug汇总" class="headerlink" title="bug汇总"></a>bug汇总</h1><h2 id="记一次使用fastjson对象拷贝的bug"><a href="#记一次使用fastjson对象拷贝的bug" class="headerlink" title="记一次使用fastjson对象拷贝的bug"></a>记一次使用fastjson对象拷贝的bug</h2><p>执行下面这行代码</p><pre><code>ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo.class);</code></pre><p>报错<br><code>fastjson  java.lang.IllegalArgumentException: argument type mismatch</code></p><p><em>原因就是内部类的层次不够。以下面的例子举例</em></p><pre><code>public class ModelVo {    public Data data;    public class Data {        public List&lt;Row&gt; rows;    }    public class Row{    }}</code></pre><p>应该改成这样</p><pre><code>public class ModelVo {    public Data data;    public class Data {        public List&lt;Row&gt; rows;         public class Row{        }    }}</code></pre><h2 id="按日期分组（group-by）查询统计的时候，没有数据补0"><a href="#按日期分组（group-by）查询统计的时候，没有数据补0" class="headerlink" title="按日期分组（group by）查询统计的时候，没有数据补0"></a>按日期分组（group by）查询统计的时候，没有数据补0</h2><p>网上关于这个问题的解决方案大致是生成一个日历表，往里面插足够多的日期数据然后和原来的数据，联合查询。我觉得这个方案不是很好，但是也给我提供了一些思路。我需要一张日期表，但我又不想建表。可以union all日期生成一张临时表然后左外连接你需要的数据。</p><p>比如说你想查一个最近7天的数据</p><pre><code>select a.click_date, ifnull(b.count1, 0) as count1from (         SELECT curdate() as click_date         union all         SELECT date_sub(curdate(), interval 1 day) as click_date         union all         SELECT date_sub(curdate(), interval 2 day) as click_date         union all         SELECT date_sub(curdate(), interval 3 day) as click_date         union all         SELECT date_sub(curdate(), interval 4 day) as click_date         union all         SELECT date_sub(curdate(), interval 5 day) as click_date         union all         SELECT date_sub(curdate(), interval 6 day) as click_date) a         left join (select date(alarmtime) as datetime, count(*) as count1                    from error                    where type = 1                    group by date(alarmtime)) b on a.click_date = b.datetime</code></pre><p>但是如果业务复杂一些，比如说我想知道<em>开始时间-结束时间</em>的数据，这就不像7天，30天这样可以直接写在sql里了，而且如果我想知道一年，你应该也不会一直在后面追加一年的日期<br>不过思路是对的，只不过这张日期表我们可以通过代码去拼接sql，这样不管再长的间隔也不需要我们手动拼接了。</p><pre><code>//拿到指定开始时间-结束时间所有的日期List&lt;String&gt; dateBetweenDays = DateUtil.getDateBetweenDays(DateUtil.getDate(activityStaticReq.getStartDate()), DateUtil.getDate(activityStaticReq.getEndDate()));//遍历日期拼接到sql里            StringBuilder sb = new StringBuilder();            for (int i = 0; i &lt; dateBetweenDays.size(); i++) {                if (i != dateBetweenDays.size() - 1) {                    sb.append(String.format(&quot;SELECT &#39;%s&#39; as timeDay union all &quot;, dateBetweenDays.get(i)));                } else {                    sb.append(String.format(&quot;SELECT &#39;%s&#39; as timeDay&quot;, dateBetweenDays.get(i)));                }            }            HashMap&lt;String, String&gt; map = Maps.newHashMap();            map.put(&quot;activityId&quot;, activityStaticReq.getActivityId());            map.put(&quot;table&quot;, sb.toString());            List&lt;Map&gt; shareResult = tfAccShareRecordMapper.querShare(map);            //最后在xml里拼接sqlselect DATE_FORMAT(a.timeDay,&#39;%Y/%m/%d&#39;) as time,ifnull(b.shareNum,0) shareNum,ifnull(b.shareCount,0) shareCount,ifnull(b.newUserNum,0) newUserNum    from (${table}) a left join (    select DATE_FORMAT(create_time, &#39;%Y/%m/%d&#39;) dayTime,                    count(account_id)                    shareNum,                    sum(share_record_count)         shareCount,                    sum(is_new_user)                     newUserNum                    from tf_acc_share_record o                    where o.activity_id = #{activityId}                    group by DATE_FORMAT(o.create_time, &#39;%Y/%m/%d&#39;)    ) b on DATE_FORMAT(a.timeDay, &#39;%Y/%m/%d&#39;) = b.dayTime order by a.timeDay            </code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> bug </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>333</title>
+      <link href="/2021/08/01/md-chang-yong-yu-fa/"/>
+      <url>/2021/08/01/md-chang-yong-yu-fa/</url>
+      
+        <content type="html"><![CDATA[<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><p>==周小凤是个大傻子==</p><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><p><code>周小凤</code></p><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><p><strong><em>周小凤</em></strong></p><h4 id="四级标题"><a href="#四级标题" class="headerlink" title="四级标题"></a>四级标题</h4><p><em>周小凤</em></p><h5 id="五级标题"><a href="#五级标题" class="headerlink" title="五级标题"></a>五级标题</h5><p>周小凤</p><h6 id="六级标题"><a href="#六级标题" class="headerlink" title="六级标题"></a>六级标题</h6><ul><li>Item 1</li><li>Item 2<ul><li>Item 2a</li><li>Item 2b</li></ul></li></ul><p>正如 Kanye West 所说：</p><blockquote><p>We’re living the future so<br>the present is our past.</p></blockquote><h2 id="如下，三个或者更多的"><a href="#如下，三个或者更多的" class="headerlink" title="如下，三个或者更多的"></a>如下，三个或者更多的</h2><h2 id="连字符"><a href="#连字符" class="headerlink" title="连字符"></a>连字符</h2><h2 id="星号"><a href="#星号" class="headerlink" title="星号"></a>星号</h2><p>我觉得你应该在这里使用<br><code>&lt;addr&gt;</code> 才对。</p><pre class="line-numbers language-ruby"><code class="language-ruby"><span class="token keyword">require</span> <span class="token string">'redcarpet'</span>markdown <span class="token operator">=</span> <span class="token constant">Redcarpet</span><span class="token punctuation">.</span><span class="token keyword">new</span><span class="token punctuation">(</span><span class="token string">"Hello World!"</span><span class="token punctuation">)</span>puts markdown<span class="token punctuation">.</span>to_html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token keyword">return</span> x <span class="token operator">+</span> y<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token keyword">return</span> x <span class="token operator">+</span> y<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-javascript"><code class="language-javascript">a<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><pre class="line-numbers language-javascript"><code class="language-javascript">dsa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><input checked disabled type="checkbox"> @mentions, #refs, <a href>links</a>, <strong>formatting</strong>, and <del>tags</del> supported</li><li><input checked disabled type="checkbox"> list syntax required (any unordered or ordered list supported)</li><li><input checked disabled type="checkbox"> this is a complete item</li><li><input disabled type="checkbox"> this is an incomplete item</li></ul><p>[^1]: Hi! This is a footnote</p><ul><li>我爱周小凤<ul><li>我</li><li>爱</li><li>周</li><li>小</li><li>凤</li></ul></li></ul><ol><li>我 </li><li>爱 </li><li>周</li><li>小</li><li>凤 </li></ol><blockquote><p>我爱周小凤</p></blockquote><p><em>我爱周小凤</em></p><p><del>我爱周小凤</del><br><a href="https://www.jianshu.com/p/d1d6f6da103c" target="_blank" rel="noopener">百度链接</a>在哪里啊<br><img src="https://img1.baidu.com/it/u=197100022,1745471859&fm=26&fmt=auto&gp=0.jpg" alt="图片地址"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 1111 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 标签1 </tag>
+            
+            <tag> 标签2 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>5W2H | 关于写博客的七点反思</title>
+      <link href="/2020/01/14/test/"/>
+      <url>/2020/01/14/test/</url>
+      
+        <content type="html"><![CDATA[<blockquote></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 博客 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
