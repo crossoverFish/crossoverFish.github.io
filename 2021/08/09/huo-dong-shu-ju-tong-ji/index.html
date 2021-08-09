@@ -4,13 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="dddd, crossoverFish">
+    <meta name="keywords" content="活动数据统计, crossoverFish">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="
-
-">
+    <meta name="description" content="业务分享
+生成分享链接-&amp;gt;根据活动id获取分享配置,如果分享,添加shareTag标识-&amp;gt;如果链接包含?shareId=xxx,去掉这部分重新拼接长链接-&amp;gt;获取用户登录信息,未登录直接生成短链接返回-&amp;gt;已登录,通过活">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>dddd | crossoverFish</title>
+    <title>活动数据统计 | crossoverFish</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -331,13 +330,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/25.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        dddd
+                        活动数据统计
                     </div>
                 </div>
             </div>
@@ -448,8 +447,8 @@
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/博客/" target="_blank">
-                            <span class="chip bg-color">博客</span>
+                        <a href="/tags/work/" target="_blank">
+                            <span class="chip bg-color">work</span>
                         </a>
                         
                     </div>
@@ -460,8 +459,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                        <a href="/categories/随笔/" class="post-category" target="_blank">
-                            随笔
+                        <a href="/categories/业务记录/" class="post-category" target="_blank">
+                            业务记录
                         </a>
                         
                     </div>
@@ -472,7 +471,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-01-14
+                    2021-08-09
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -486,7 +485,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    377
                 </div>
                 
 
@@ -504,9 +503,36 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-</blockquote>
+                <h1 id="业务"><a href="#业务" class="headerlink" title="业务"></a>业务</h1><h2 id="分享"><a href="#分享" class="headerlink" title="分享"></a>分享</h2><ol>
+<li>生成分享链接-&gt;根据活动id获取分享配置,如果分享,添加shareTag标识-&gt;如果链接包含?shareId=xxx,去掉这部分重新拼接长链接-&gt;获取用户登录信息,未登录直接生成短链接返回-&gt;已登录,通过活动ID和账户ID在分享表中获取分享记录-&gt;如果分享记录存在，并且长链一致，返回对应短链；否则重新生成短链，记录分享表</li>
+</ol>
+<pre class="line-numbers language-json"><code class="language-json">入参<span class="token operator">:</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"activityId"</span><span class="token operator">:</span> <span class="token string">"4ciL15mIpKZuSUWcfnNyqEtbHWmwnpZSJcy2u2XdqzU\u003d"</span><span class="token punctuation">,</span>
+      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"55av54uC56CN5Lu3"</span><span class="token punctuation">,</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"/cutPrice.html?   title\u003d55av54uC56CN5Lu3\u0026activityId\u003d4ciL15mIpKZuSUWcfnNyqEtbHWmwnpZSJcy2u2Xdq zU\u003d#/cutDetail? activityId\u003d4ciL15mIpKZuSUWcfnNyqEtbHWmwnpZSJcy2u2XdqzU%3D\u0026goodsId\u003d1115712\u   0026groupId\u003d1044601"</span>
+    <span class="token punctuation">}</span>
+出参<span class="token operator">:</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"shareTag"</span><span class="token operator">:</span> <span class="token string">"N"</span><span class="token punctuation">,</span>
+        <span class="token property">"sharePic"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token property">"shareTitle"</span><span class="token operator">:</span> <span class="token string">"页面标题"</span><span class="token punctuation">,</span>
+        <span class="token property">"shareUrl"</span><span class="token operator">:</span> <span class="token string">"/dwz/7VfM7f"</span><span class="token punctuation">,</span>
+        <span class="token property">"shareDesc"</span><span class="token operator">:</span> <span class="token string">"注页面及分享信息请遵守微信朋友圈管理规定，请勿出现违规信息，否则有可能导致活动分  享到朋友圈仅自己可见"</span>
+      <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>短链接访问-&gt;根据短链接查找长链接-&gt;根据短链接paramId查找分享链接,如果paramId关联分享活动-&gt;url最后拼接上&amp;shareId=分享人</li>
+</ol>
+<ol start="3">
+<li>微信登录跳转轨迹<pre><code>获取微信网页授权的完整URL为:
+授权完整地址为：==&gt; https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbd8120fb97e3f871&amp;redirect_uri=https%3A%2F%2Ft.hualedou.cn%2Fmarket-gateweb%2FweChat%2FgetOpenId&amp;response_type=code&amp;scope=snsapi_userinfo&amp;state=111029777#wechat_redirect
+</code></pre></li>
+</ol>
+<p>授权通过，页面重定向至 :===&gt; <a href="https://t.hualedou.cn/market-mobile/autoLogin?ticket=375e5d31cc1041b09c0322f3806b3a29" target="_blank" rel="noopener">https://t.hualedou.cn/market-mobile/autoLogin?ticket=375e5d31cc1041b09c0322f3806b3a29</a></p>
+<p>开始将页面重定向至 :===&gt; <a href="https://t.hualedou.cn/market-h5/scratchCard.html?title=5Yiu5Yiu5LmQ&amp;activityId=I*mR*mRHQkLVLsrDWAAv2OE1Rc6/94aHhOKfKQ58d3E=#/?_randm=6ef22aad62414bd4af1571c35faf7219" target="_blank" rel="noopener">https://t.hualedou.cn/market-h5/scratchCard.html?title=5Yiu5Yiu5LmQ&amp;activityId=I*mR*mRHQkLVLsrDWAAv2OE1Rc6/94aHhOKfKQ58d3E=#/?_randm=6ef22aad62414bd4af1571c35faf7219</a></p>
+<pre><code>
 
+</code></pre>
             </div>
             <hr />
 
@@ -664,9 +690,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《dddd》
+                    《活动数据统计》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/01/14/test/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/09/huo-dong-shu-ju-tong-ji/" property="cc:attributionName"
                rel="cc:attributionURL">
                 crossoverFish
             </a> 采用
@@ -707,7 +733,7 @@
         repo: 'crossoverFish.github.io',
         owner: 'crossoverFish',
         admin: "crossoverFish",
-        id: '2020/01/14/test/',
+        id: '2021/08/09/huo-dong-shu-ju-tong-ji/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -990,65 +1016,49 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/08/01/md-chang-yong-yu-fa/">
+                <a href="/2021/08/09/huo-dong-shu-ju-tong-ji/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="333">
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="活动数据统计">
                         
-                        <span class="card-title">333</span>
+                        <span class="card-title">活动数据统计</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            一级标题==周小凤是个大傻子==
-二级标题周小凤
-三级标题周小凤
-四级标题周小凤
-五级标题周小凤
-六级标题
-Item 1
-Item 2
-Item 2a
-Item 2b
-
-
-
-正如 Kanye West 所说：
-
-We’re living t
+                            业务分享
+生成分享链接-&gt;根据活动id获取分享配置,如果分享,添加shareTag标识-&gt;如果链接包含?shareId=xxx,去掉这部分重新拼接长链接-&gt;获取用户登录信息,未登录直接生成短链接返回-&gt;已登录,通过活
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-01
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-09
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/1111/" class="post-category" target="_blank">
-                                    1111
+                            <a href="/categories/业务记录/" class="post-category" target="_blank">
+                                    业务记录
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/标签1/" target="_blank">
-                        <span class="chip bg-color">标签1</span>
-                    </a>
-                    
-                    <a href="/tags/标签2/" target="_blank">
-                        <span class="chip bg-color">标签2</span>
+                    <a href="/tags/work/" target="_blank">
+                        <span class="chip bg-color">work</span>
                     </a>
                     
                 </div>
@@ -1059,48 +1069,51 @@ We’re living t
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="fa fa-dot-circle-o"></i>
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/01/14/test/">
+                <a href="/2021/08/09/fang-fa-de-can-shu-chuan-di-ji-zhi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="dddd">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="方法的参数传递机制">
                         
-                        <span class="card-title">dddd</span>
+                        <span class="card-title">方法的参数传递机制</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            今天有个同事问了我一个基础问题,虽然比较基础,但平常写业务代码,有时候不注意往往会忽略这些小细节.  回答这个问题之前我们需要明白形参和实参在传递不同数据类型时的区别
 
+形参和实参
 
+形参是基本数据类型，传递数据值
+
+形参是引用数据类型，传
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-01-14
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-09
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/随笔/" class="post-category" target="_blank">
-                                    随笔
+                            <a href="/categories/日常bug/" class="post-category" target="_blank">
+                                    日常bug
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/博客/" target="_blank">
-                        <span class="chip bg-color">博客</span>
+                    <a href="/tags/java/" target="_blank">
+                        <span class="chip bg-color">java</span>
                     </a>
                     
                 </div>
@@ -1274,7 +1287,7 @@ We’re living t
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">1.4k</span>
+            <span class="white-color">1.5k</span>
             
 
             <br>
