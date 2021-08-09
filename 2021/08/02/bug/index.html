@@ -476,7 +476,7 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    654
+                    653
                 </div>
                 
 
@@ -495,17 +495,19 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="bug汇总"><a href="#bug汇总" class="headerlink" title="bug汇总"></a>bug汇总</h1><h2 id="记一次使用fastjson对象拷贝的bug"><a href="#记一次使用fastjson对象拷贝的bug" class="headerlink" title="记一次使用fastjson对象拷贝的bug"></a>记一次使用fastjson对象拷贝的bug</h2><p>执行下面这行代码</p>
-<pre><code>ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo.class);</code></pre><p>报错<br><code>fastjson  java.lang.IllegalArgumentException: argument type mismatch</code></p>
+<pre class="line-numbers language-java"><code class="language-java">ModelVo modelVo <span class="token operator">=</span> JSONObject<span class="token punctuation">.</span><span class="token function">parseObject</span><span class="token punctuation">(</span>JSONObject<span class="token punctuation">.</span><span class="token function">toJSONString</span><span class="token punctuation">(</span>model<span class="token punctuation">)</span><span class="token punctuation">,</span> ModelVo<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>报错<br><code>fastjson  java.lang.IllegalArgumentException: argument type mismatch</code></p>
 <p><em>原因就是内部类的层次不够。以下面的例子举例</em></p>
-<pre><code>
-public class ModelVo {
-    public Data data;
-    public class Data {
-        public List&lt;Row&gt; rows;
-    }
-    public class Row{
-    }
-}</code></pre><p>应该改成这样</p>
+<pre class="line-numbers language-java"><code class="language-java">
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ModelVo</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Data data<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Data</span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Row<span class="token operator">></span> rows<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Row</span><span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>应该改成这样</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ModelVo</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> Data data<span class="token punctuation">;</span>
     <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Data</span> <span class="token punctuation">{</span>
