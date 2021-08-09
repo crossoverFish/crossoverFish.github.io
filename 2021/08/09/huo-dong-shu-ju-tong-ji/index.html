@@ -530,9 +530,7 @@
 </ol>
 <p>授权通过，页面重定向至 :===&gt; <a href="https://t.hualedou.cn/market-mobile/autoLogin?ticket=375e5d31cc1041b09c0322f3806b3a29" target="_blank" rel="noopener">https://t.hualedou.cn/market-mobile/autoLogin?ticket=375e5d31cc1041b09c0322f3806b3a29</a></p>
 <p>开始将页面重定向至 :===&gt; <a href="https://t.hualedou.cn/market-h5/scratchCard.html?title=5Yiu5Yiu5LmQ&amp;activityId=I*mR*mRHQkLVLsrDWAAv2OE1Rc6/94aHhOKfKQ58d3E=#/?_randm=6ef22aad62414bd4af1571c35faf7219" target="_blank" rel="noopener">https://t.hualedou.cn/market-h5/scratchCard.html?title=5Yiu5Yiu5LmQ&amp;activityId=I*mR*mRHQkLVLsrDWAAv2OE1Rc6/94aHhOKfKQ58d3E=#/?_randm=6ef22aad62414bd4af1571c35faf7219</a></p>
-<pre><code>
 
-</code></pre>
             </div>
             <hr />
 
@@ -730,7 +728,7 @@
     let gitalk = new Gitalk({
         clientID: '435e293ab6d256124e2c',
         clientSecret: '376fe302725cba98f28b24204cf53e37400cf671',
-        repo: 'crossoverFish.github.io',
+        repo: 'blog-comments',
         owner: 'crossoverFish',
         admin: "crossoverFish",
         id: '2021/08/09/huo-dong-shu-ju-tong-ji/',
@@ -1020,19 +1018,25 @@
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/08/09/an-ri-fen-zu-de-ce-lue/">
+                <a href="/2021/08/09/fang-fa-de-can-shu-chuan-di-ji-zhi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="按日分组的策略">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="方法的参数传递机制">
                         
-                        <span class="card-title">按日分组的策略</span>
+                        <span class="card-title">方法的参数传递机制</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            按日期分组（group by）查询统计的时候，没有数据补0网上关于这个问题的解决方案大致是生成一个日历表，往里面插足够多的日期数据然后和原来的数据，联合查询。我觉得这个方案不是很好，但是也给我提供了一些思路。我需要一张日期表，但我又不想建表
+                            今天有个同事问了我一个基础问题,虽然比较基础,但平常写业务代码,有时候不注意往往会忽略这些小细节.  回答这个问题之前我们需要明白形参和实参在传递不同数据类型时的区别
+
+形参和实参
+
+形参是基本数据类型，传递数据值
+
+形参是引用数据类型，传
                         
                     </div>
                     <div class="publish-info">
@@ -1043,8 +1047,8 @@
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/总结/" class="post-category" target="_blank">
-                                    总结
+                            <a href="/categories/日常bug/" class="post-category" target="_blank">
+                                    日常bug
                                 </a>
                             
                             
@@ -1069,25 +1073,21 @@
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/08/09/fang-fa-de-can-shu-chuan-di-ji-zhi/">
+                <a href="/2021/08/09/dui-xiang-kao-bei/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="方法的参数传递机制">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="记一次使用fastjson拷贝对象的bug">
                         
-                        <span class="card-title">方法的参数传递机制</span>
+                        <span class="card-title">记一次使用fastjson拷贝对象的bug</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            今天有个同事问了我一个基础问题,虽然比较基础,但平常写业务代码,有时候不注意往往会忽略这些小细节.  回答这个问题之前我们需要明白形参和实参在传递不同数据类型时的区别
-
-形参和实参
-
-形参是基本数据类型，传递数据值
-
-形参是引用数据类型，传
+                            执行下面这行代码
+ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo.class);
+报错fastjson  java.lang.
                         
                     </div>
                     <div class="publish-info">
@@ -1098,8 +1098,8 @@
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/日常bug/" class="post-category" target="_blank">
-                                    日常bug
+                            <a href="/categories/java基础/" class="post-category" target="_blank">
+                                    java基础
                                 </a>
                             
                             
