@@ -592,7 +592,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"1111","value":1},{"name":"随笔","value":1}],
+                data: [{"name":"随笔","value":1},{"name":"1111","value":1}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -616,7 +616,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         xAxis: [
             {
                 type: 'category',
-                data: ["标签1","标签2","博客","bug"]
+                data: ["bug","博客","标签1","标签2"]
             }
         ],
         yAxis: [
@@ -738,14 +738,8 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         <div class="tag-chips center-align">
             
             
-            <a href="/tags/标签1/" target="_blank">
-                <span class="chip center-align waves-effect waves-light chip-default">标签1</span>
-            </a>
-            
-            
-            
-            <a href="/tags/标签2/" target="_blank">
-                <span class="chip center-align waves-effect waves-light chip-default">标签2</span>
+            <a href="/tags/bug/" target="_blank">
+                <span class="chip center-align waves-effect waves-light chip-default">bug</span>
             </a>
             
             
@@ -756,8 +750,14 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
             
             
             
-            <a href="/tags/bug/" target="_blank">
-                <span class="chip center-align waves-effect waves-light chip-default">bug</span>
+            <a href="/tags/标签1/" target="_blank">
+                <span class="chip center-align waves-effect waves-light chip-default">标签1</span>
+            </a>
+            
+            
+            
+            <a href="/tags/标签2/" target="_blank">
+                <span class="chip center-align waves-effect waves-light chip-default">标签2</span>
             </a>
             
             
