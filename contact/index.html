@@ -51,6 +51,7 @@
         })();
     </script>
 
+<link rel="alternate" href="/atom.xml" title="crossoverFish" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -349,7 +350,25 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 <li><strong>简介：</strong>公众号</li>
 <li><strong>头像：</strong><a href="https://crossoverFish.com/medias/avatars/avatar.jpg" target="_blank" rel="noopener">https://crossoverFish.com/medias/avatars/avatar.jpg</a></li>
 </ul>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
                     </div>
                 </div>
             </div>
@@ -399,7 +418,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">1.5k</span>
+            <span class="white-color">1.3k</span>
             
 
             <br>
@@ -427,7 +446,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 
 
 
-    <a href="http://wpa.qq.com/msgrd?v=3&uin=792321264&site=qq&menu=yes" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=495457022&site=qq&menu=yes" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
         <i class="fa fa-qq"></i>
     </a>
 
