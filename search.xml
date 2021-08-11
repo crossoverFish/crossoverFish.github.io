@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>流程漏斗分析</title>
+      <link href="/2021/08/10/liu-cheng-lou-dou-fen-xi/"/>
+      <url>/2021/08/10/liu-cheng-lou-dou-fen-xi/</url>
+      
+        <content type="html"><![CDATA[<script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>记一次使用fastjson拷贝对象的bug</title>
       <link href="/2021/08/09/dui-xiang-kao-bei/"/>
       <url>/2021/08/09/dui-xiang-kao-bei/</url>
