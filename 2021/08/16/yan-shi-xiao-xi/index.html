@@ -491,7 +491,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>维护调度平台,有个核心功能就是定时任务,我自己比较常用的调度框架是quartz.比如一个常见的业务场景:用户下单后指定时间未支付取消订单.</p>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>维护调度平台,有个核心功能就是定时任务,我自己比较常用的调度框架是quartz.比如一个常见的业务场景:用户下单后指定时间未支付取消订单.</p>
 <p>实现这类需求,常见的方式有俩种:</p>
 <ol>
 <li>轮询定时任务：给定周期内扫描所有未支付的订单，查看时间是否到期。</li>
@@ -573,7 +573,7 @@
 <li><p>订单过期不删除，查询订单，对过期时间作校验，如果过期则删除，缺点如果一直不访问订单，则库存一直无法回滚</p>
 </li>
 </ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>延时任务实现的方式还是很多的,如果有现成的组件直接用就可以了,比如rocketmq,它自带处理延时消息的功能。如果不行,结合自己业务,技术栈,选择合适的方式,我比较经常用的是监听过期key的方式.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>延时任务实现的方式还是很多的,如果有现成的组件直接用就可以了,比如rocketmq,它自带处理延时消息的功能。如果不行,结合自己业务,技术栈,选择合适的方式,我比较经常用的是监听过期key的方式.</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
