@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crossoverfish.github.io/"/>
-  <updated>2021-08-17T08:15:14.047Z</updated>
+  <updated>2021-08-17T08:42:51.489Z</updated>
   <id>https://crossoverfish.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://crossoverfish.github.io/2021/08/17/he-xin-huo-dong-ye-wu-fen-xi/"/>
     <id>https://crossoverfish.github.io/2021/08/17/he-xin-huo-dong-ye-wu-fen-xi/</id>
     <published>2021-08-17T07:53:29.000Z</published>
-    <updated>2021-08-17T08:15:14.047Z</updated>
+    <updated>2021-08-17T08:42:51.489Z</updated>
     
     <summary type="html">
     
@@ -63,30 +63,6 @@
     
     
       <category term="java" scheme="https://crossoverfish.github.io/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>流程漏斗分析</title>
-    <link href="https://crossoverfish.github.io/2021/08/10/liu-cheng-lou-dou-fen-xi/"/>
-    <id>https://crossoverfish.github.io/2021/08/10/liu-cheng-lou-dou-fen-xi/</id>
-    <published>2021-08-10T07:08:50.000Z</published>
-    <updated>2021-08-16T01:34:13.348Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;流程漏斗分析&quot;&gt;&lt;a href=&quot;#流程漏斗分析&quot; class=&quot;headerlink&quot; title=&quot;流程漏斗分析&quot;&gt;&lt;/a&gt;流程漏斗分析&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;人数漏斗&lt;br&gt;扫描人数:参与活动人数
-        
-      
-    
-    </summary>
-    
-    
     
   </entry>
   

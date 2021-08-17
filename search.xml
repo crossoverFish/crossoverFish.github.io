@@ -42,19 +42,6 @@
     
     
     <entry>
-      <title>流程漏斗分析</title>
-      <link href="/2021/08/10/liu-cheng-lou-dou-fen-xi/"/>
-      <url>/2021/08/10/liu-cheng-lou-dou-fen-xi/</url>
-      
-        <content type="html"><![CDATA[<h1 id="流程漏斗分析"><a href="#流程漏斗分析" class="headerlink" title="流程漏斗分析"></a>流程漏斗分析</h1><ol><li><p>人数漏斗<br>扫描人数:参与活动人数 tf_f_user_scan_record<br>抽奖人数:参与抽奖人数<br>中奖人数:参与中奖人数<br>领奖人数:参与领奖人数 </p></li><li><p>次数漏斗<br>扫描次数:参与活动次数 tf_f_user_scan_record<br>抽奖次数:参与抽奖次数<br>中奖次数:参与中奖次数<br>领奖次数:参与领奖次数 </p></li></ol><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>记一次使用fastjson拷贝对象的bug</title>
       <link href="/2021/08/09/dui-xiang-kao-bei/"/>
       <url>/2021/08/09/dui-xiang-kao-bei/</url>
