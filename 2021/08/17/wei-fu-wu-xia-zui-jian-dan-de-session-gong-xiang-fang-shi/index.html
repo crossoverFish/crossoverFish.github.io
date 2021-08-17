@@ -4,14 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="延时消息, crossoverFish">
+    <meta name="keywords" content="微服务下最简单的session共享方式, crossoverFish">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="前言维护调度平台,有个核心功能就是定时任务,我自己比较常用的调度框架是quartz.比如一个常见的业务场景:用户下单后指定时间未支付取消订单.
-实现这类需求,常见的方式有俩种:
-
-轮询定时任务：给定周期内扫描所有未支付的订单，查看时间是否到">
+    <meta name="description" content="前言对于传统的单体服务,不存在session共享问题,但是在微服务架构下,session共享最简单的方式就是通过redis去实现,从redis中存取数据工作量还是比较大的,spring session使用spring的代理过滤器,将所有se">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>延时消息 | crossoverFish</title>
+    <title>微服务下最简单的session共享方式 | crossoverFish</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -318,13 +315,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        延时消息
+                        微服务下最简单的session共享方式
                     </div>
                 </div>
             </div>
@@ -434,24 +431,11 @@
                 <div class="col s7">
                     
                     <div class="article-tag">
-                        
-                        <a href="/tags/java/" target="_blank">
-                            <span class="chip bg-color">java</span>
-                        </a>
-                        
+                        <span class="chip bg-color">无标签</span>
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fa fa-bookmark fa-fw icon-category"></i>
-                        
-                        <a href="/categories/总结/" class="post-category" target="_blank">
-                            总结
-                        </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -459,7 +443,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-16
+                    2021-08-17
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -473,14 +457,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    473
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    2 分
                 </div>
                 
                 
@@ -491,89 +475,52 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>维护调度平台,有个核心功能就是定时任务,我自己比较常用的调度框架是quartz.比如一个常见的业务场景:用户下单后指定时间未支付取消订单.</p>
-<p>实现这类需求,常见的方式有俩种:</p>
-<ol>
-<li>轮询定时任务：给定周期内扫描所有未支付的订单，查看时间是否到期。</li>
-<li>延时消息：过期自动触发,订单创建的时候发送一条 N 分钟到期的信息，一旦消息消费后便可判断订单是否可以取消。</li>
-</ol>
-<h2 id="quartz定时扫描"><a href="#quartz定时扫描" class="headerlink" title="quartz定时扫描"></a>quartz定时扫描</h2><p>先看第一种，这类方式实现较为简单，只需要启动一个定时任务即可；但缺点同样也很明显，这个间隔扫描的时间不好控制。</p>
-<p>给短了会造成很多无意义的扫描，增大数据库压力，给长了又会使得误差较大。</p>
-<p>当然最大的问题还是效率较低，随着订单增多耗时会呈线性增长，最差的情况甚至会出现上一波轮询还没有扫描完，下一波调度又来了。</p>
-<p>这个问题在quartz里我是这么解决的<br>首先介绍下,在分布式定时任务中（或者集群），quartz能够保证同一时刻只会有一个定时任务运行。在Job的实现类上加这个注解@DisallowConcurrentExecution,它可以禁止并发执行多个相同定义的JobDetail,也就是上一个任务没有同时执行完,下个任务不会执行.这样就很大程度上避免了重复处理相同数据.<br>但其实还是有个明显的问题,比如说,业务执行到一半发生了异常,这个定时任务会一直未执行结束,不可能后面的任务一直在等,我们可以用Future这个接口,它提供了检查计算是否完成等方法.在指定时间内没有完成计算，则会抛出TimeoutException.这个时候我们可以处理这部分异常数据了.</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">try</span> <span class="token punctuation">{</span>
-            logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"------------MessageSendJob,发送定时任务开始------------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            Future<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> future <span class="token operator">=</span> threadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span>
-                    <span class="token punctuation">{</span>
-                        <span class="token function">sendMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token punctuation">}</span>
-            <span class="token punctuation">)</span><span class="token punctuation">;</span>
-            future<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token comment" spellcheck="true">//记录日志</span>
-        <span class="token punctuation">}</span>
-        logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"------------MessageSendJob,发送定时任务结束------------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>但总归定时任务定时扫描会造成很多不必要的扫描,这时第二种方案就要显得靠谱多了，实时性也比较高。</p>
-<h2 id="过期自动触发"><a href="#过期自动触发" class="headerlink" title="过期自动触发"></a>过期自动触发</h2><ol>
-<li><p>使用 DelayQueue, 只需要有一个线程不断从队列中获取数据即可，它的优点是不用引入第三方依赖，实现也很简单，缺点也很明显，它是内存存储，对分布式支持不友好，如果发生单点故障，可能会造成数据丢失，无界队列还存在 OOM 的风险。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">static</span> DelayQueue delayQueue  <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DelayQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对于传统的单体服务,不存在session共享问题,但是在微服务架构下,session共享最简单的方式就是通过redis去实现,从redis中存取数据工作量还是比较大的,spring session使用spring的代理过滤器,将所有session拦截下来.自动同步到redis中</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li><p>创建一个springboot工程,引入Web,Spring Session,Redis,pom文件如下</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-web<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.session<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-session-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 
-     <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-         <span class="token annotation punctuation">@Override</span>
-         <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
-             delayQueue<span class="token punctuation">.</span><span class="token function">offer</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyDelayedTask</span><span class="token punctuation">(</span><span class="token string">"task1"</span><span class="token punctuation">,</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-         <span class="token punctuation">}</span>
-     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-     <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-         Delayed take <span class="token operator">=</span> delayQueue<span class="token punctuation">.</span><span class="token function">take</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>take<span class="token punctuation">)</span><span class="token punctuation">;</span>
-     <span class="token punctuation">}</span>
- <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p>使用Redis键通知,默认情况下 Redis 服务器端是不开启键过期通知的，需要我们通过 config set notify-keyspace-events Ex 的命令手动开启，开启键过期通知后，我们就可以拿到每个键值过期的事件，利用这个机制实现了给每个key开启一个定时任务的功能。使用 Redis 可以将数据持久化到磁盘，规避了数据丢失的风险，并且支持分布式，避免了单点故障。并且它能监听集群，可以建立多个redis连接，分别对每个redis的key过期进行监听。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
-* 配置 RedisListenerConfig 实现监听 Redis key 过期时间
-*/</span>
- <span class="token annotation punctuation">@Bean</span>
- RedisMessageListenerContainer <span class="token function">container1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-     <span class="token keyword">final</span> RedisMessageListenerContainer container <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RedisMessageListenerContainer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     JedisConnectionFactory jedisConnectionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">JedisConnectionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     jedisConnectionFactory<span class="token punctuation">.</span><span class="token function">setHostName</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     jedisConnectionFactory<span class="token punctuation">.</span><span class="token function">setPort</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     jedisConnectionFactory<span class="token punctuation">.</span><span class="token function">setPassword</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     jedisConnectionFactory<span class="token punctuation">.</span><span class="token function">setDatabase</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     jedisConnectionFactory<span class="token punctuation">.</span><span class="token function">setPoolConfig</span><span class="token punctuation">(</span><span class="token function">jedisPoolConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     jedisConnectionFactory<span class="token punctuation">.</span><span class="token function">afterPropertiesSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     container<span class="token punctuation">.</span><span class="token function">setConnectionFactory</span><span class="token punctuation">(</span>jedisConnectionFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
-     <span class="token keyword">return</span> container<span class="token punctuation">;</span>
- <span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">/** 
-  * 针对 redis 数据失效事件，进行数据处理
-  * @param message
-  * @param pattern
-  */</span>
- <span class="token annotation punctuation">@Override</span>
- <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onMessage</span><span class="token punctuation">(</span>Message message<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> pattern<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-     String key <span class="token operator">=</span> message<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">// 获取到失效的 key</span>
-     <span class="token keyword">if</span> <span class="token punctuation">(</span>StrUtil<span class="token punctuation">.</span><span class="token function">startWith</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> <span class="token string">"product_check"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-         logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"监听过期key成功,key => {}"</span><span class="token punctuation">,</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
-         String productId <span class="token operator">=</span> key<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">":"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-         String orderId <span class="token operator">=</span> key<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">":"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-         TOrder order <span class="token operator">=</span> TOrder<span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span>Long<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>orderId<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">productId</span><span class="token punctuation">(</span>Long<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>productId<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">orderStatus</span><span class="token punctuation">(</span>CommonConstants<span class="token punctuation">.</span>OrderStatus<span class="token punctuation">.</span>RELEASE_PAY<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     <span class="token punctuation">}</span>
-
- <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<li><p>配置文件</p>
+<pre class="line-numbers language-properties"><code class="language-properties"><span class="token attr-name">spring.redis.host</span><span class="token punctuation">=</span><span class="token attr-value">127.0.0.1</span>
+<span class="token attr-name">spring.redis.password</span><span class="token punctuation">=</span><span class="token attr-value">123456</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 </li>
-<li><p>kafka时间轮，实现难度大，内存消耗大<br>时间轮其实本质上它就是一个指定长度的环形数组,每个任务会依据时间占一个格子,同时需要记录它所对应的圈数,不然同一个格子上会有重复的延时消息,并且我们取出的时候需要判断圈数是否为0,如果不为0,圈数得减1.这样就可避免轮询所有的任务，不过如果时间轮的槽比较少，导致某一个槽上的任务非常多那效率也比较低，这就和 HashMap 的 hash 冲突是一样的。</p>
+<li><p>Idea中启动多个端口进行访问<br><img src="/images/Idea%E5%A4%9A%E7%AB%AF%E5%8F%A3%E5%90%AF%E5%8A%A8.png" alt="这边我设置的是9091,9092俩个端口模拟集群"></p>
 </li>
-<li><p>订单过期不删除，查询订单，对过期时间作校验，如果过期则删除，缺点如果一直不访问订单，则库存一直无法回滚</p>
+<li><p>nginx配置</p>
+<pre class="line-numbers language-conf"><code class="language-conf"># 简单说明下上游服务器tyu.com负载到9091和9092这俩个端口,weight 表示服务的权重
+upstream tyu.com {
+     #ip_hash;
+     server 127.0.0.1:9091 weight=1;
+     server 127.0.0.1:9092 weight=2;
+ }
+location / {
+         proxy_pass   http://tyu.com/;
+         proxy_redirect default;
+     }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>测试<br><img src="/images/n1.png" alt="往session塞值"><br><img src="/images/n2.png" alt="去get session的值"><br><img src="/images/n3.png" alt="去get session的值"><br>往92塞值,可以发现91,92这俩个端口都能get到值</p>
 </li>
 </ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>延时任务实现的方式还是很多的,如果有现成的组件直接用就可以了,比如rocketmq,它自带处理延时消息的功能。如果不行,结合自己业务,技术栈,选择合适的方式,我比较经常用的是监听过期key的方式.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果大家没有在 SSM 架构中用过 Spring Session ，可能不太好理解我们在 Spring Boot 中使用 Spring Session 有多么方便，因为在 SSM 架构中，Spring Session 的使用要配置三个地方 ，一个是 web.xml 配置代理过滤器，然后在 Spring 容器中配置 Redis，最后再配置 Spring Session，步骤还是有些繁琐的，而 Spring Boot 中直接帮我们省去了这些繁琐的步骤！不用再去配置 Spring Session。</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -750,9 +697,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《延时消息》
+                    《微服务下最简单的session共享方式》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/16/yan-shi-xiao-xi/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/17/wei-fu-wu-xia-zui-jian-dan-de-session-gong-xiang-fang-shi/" property="cc:attributionName"
                rel="cc:attributionURL">
                 crossoverFish
             </a> 采用
@@ -794,7 +741,7 @@
         repo: 'crossoverFish.github.io',
         owner: 'crossoverFish',
         admin: "crossoverFish",
-        id: '2021/08/16/yan-shi-xiao-xi/',
+        id: '2021/08/17/wei-fu-wu-xia-zui-jian-dan-de-session-gong-xiang-fang-shi/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -815,9 +762,45 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2021/08/17/wei-fu-wu-xia-zui-jian-dan-de-session-gong-xiang-fang-shi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="微服务下最简单的session共享方式">
+                        
+                        <span class="card-title">微服务下最简单的session共享方式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            前言对于传统的单体服务,不存在session共享问题,但是在微服务架构下,session共享最简单的方式就是通过redis去实现,从redis中存取数据工作量还是比较大的,spring session使用spring的代理过滤器,将所有se
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-17
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2021/08/17/he-xin-huo-dong-ye-wu-fen-xi/">
                     <div class="card-image">
@@ -837,62 +820,13 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-17
-                        </span>
-                        <span class="publish-author">
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/08/09/dui-xiang-kao-bei/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="记一次使用fastjson拷贝对象的bug">
-                        
-                        <span class="card-title">记一次使用fastjson拷贝对象的bug</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            记一次使用fastjson拷贝对象的bug
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-09
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-17
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/java基础/" class="post-category" target="_blank">
-                                    java基础
-                                </a>
-                            
-                            
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/java/" target="_blank">
-                        <span class="chip bg-color">java</span>
-                    </a>
-                    
                 </div>
                 
             </div>
