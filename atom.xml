@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crossoverfish.github.io/"/>
-  <updated>2021-08-18T01:24:08.698Z</updated>
+  <updated>2021-08-18T09:13:53.980Z</updated>
   <id>https://crossoverfish.github.io/</id>
   
   <author>
@@ -17,11 +17,68 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>springSecurity-JWT</title>
+    <link href="https://crossoverfish.github.io/2021/08/18/springsecurity-jwt/"/>
+    <id>https://crossoverfish.github.io/2021/08/18/springsecurity-jwt/</id>
+    <published>2021-08-18T08:57:44.000Z</published>
+    <updated>2021-08-18T09:13:53.980Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;使用springboot+springSecurity+jwt实现基于token的权限管理&lt;/p&gt;
+&lt;h2 id=&quot;用户认证&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="框架" scheme="https://crossoverfish.github.io/categories/%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="jwt" scheme="https://crossoverfish.github.io/tags/jwt/"/>
+    
+      <category term="spring-security" scheme="https://crossoverfish.github.io/tags/spring-security/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>easyexcel</title>
+    <link href="https://crossoverfish.github.io/2021/08/18/easyexcel/"/>
+    <id>https://crossoverfish.github.io/2021/08/18/easyexcel/</id>
+    <published>2021-08-18T01:36:15.000Z</published>
+    <updated>2021-08-18T09:06:00.284Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;Java解析、生成Excel比较有名的框架有Apache
+        
+      
+    
+    </summary>
+    
+    
+      <category term="框架" scheme="https://crossoverfish.github.io/categories/%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="easyexcel" scheme="https://crossoverfish.github.io/tags/easyexcel/"/>
+    
+  </entry>
+  
+  <entry>
     <title>微服务下最简单的session共享方式</title>
     <link href="https://crossoverfish.github.io/2021/08/17/wei-fu-wu-xia-zui-jian-dan-de-session-gong-xiang-fang-shi/"/>
     <id>https://crossoverfish.github.io/2021/08/17/wei-fu-wu-xia-zui-jian-dan-de-session-gong-xiang-fang-shi/</id>
     <published>2021-08-17T12:35:14.000Z</published>
-    <updated>2021-08-18T01:24:08.698Z</updated>
+    <updated>2021-08-18T09:07:49.733Z</updated>
     
     <summary type="html">
     
@@ -36,10 +93,12 @@
     </summary>
     
     
-      <category term="java" scheme="https://crossoverfish.github.io/categories/java/"/>
+      <category term="框架" scheme="https://crossoverfish.github.io/categories/%E6%A1%86%E6%9E%B6/"/>
     
     
-      <category term="java" scheme="https://crossoverfish.github.io/tags/java/"/>
+      <category term="spring session" scheme="https://crossoverfish.github.io/tags/spring-session/"/>
+    
+      <category term="redis" scheme="https://crossoverfish.github.io/tags/redis/"/>
     
   </entry>
   
@@ -71,7 +130,7 @@
     <link href="https://crossoverfish.github.io/2021/08/16/yan-shi-xiao-xi/"/>
     <id>https://crossoverfish.github.io/2021/08/16/yan-shi-xiao-xi/</id>
     <published>2021-08-16T02:19:00.000Z</published>
-    <updated>2021-08-18T01:24:09.545Z</updated>
+    <updated>2021-08-18T09:07:23.827Z</updated>
     
     <summary type="html">
     
@@ -86,10 +145,14 @@
     </summary>
     
     
-      <category term="总结" scheme="https://crossoverfish.github.io/categories/%E6%80%BB%E7%BB%93/"/>
+      <category term="延时消息" scheme="https://crossoverfish.github.io/categories/%E5%BB%B6%E6%97%B6%E6%B6%88%E6%81%AF/"/>
     
     
-      <category term="java" scheme="https://crossoverfish.github.io/tags/java/"/>
+      <category term="redis" scheme="https://crossoverfish.github.io/tags/redis/"/>
+    
+      <category term="quartz" scheme="https://crossoverfish.github.io/tags/quartz/"/>
+    
+      <category term="kafka" scheme="https://crossoverfish.github.io/tags/kafka/"/>
     
   </entry>
   
@@ -98,7 +161,7 @@
     <link href="https://crossoverfish.github.io/2021/08/09/dui-xiang-kao-bei/"/>
     <id>https://crossoverfish.github.io/2021/08/09/dui-xiang-kao-bei/</id>
     <published>2021-08-09T07:27:31.000Z</published>
-    <updated>2021-08-18T01:26:31.858Z</updated>
+    <updated>2021-08-18T09:08:11.763Z</updated>
     
     <summary type="html">
     
@@ -114,10 +177,10 @@
     </summary>
     
     
-      <category term="java基础" scheme="https://crossoverfish.github.io/categories/java%E5%9F%BA%E7%A1%80/"/>
+      <category term="java" scheme="https://crossoverfish.github.io/categories/java/"/>
     
     
-      <category term="java" scheme="https://crossoverfish.github.io/tags/java/"/>
+      <category term="bug" scheme="https://crossoverfish.github.io/tags/bug/"/>
     
   </entry>
   
@@ -154,7 +217,7 @@
     <link href="https://crossoverfish.github.io/2019/10/10/an-ri-fen-zu-de-ce-lue/"/>
     <id>https://crossoverfish.github.io/2019/10/10/an-ri-fen-zu-de-ce-lue/</id>
     <published>2019-10-10T06:59:25.000Z</published>
-    <updated>2021-08-18T01:26:29.079Z</updated>
+    <updated>2021-08-18T09:08:25.561Z</updated>
     
     <summary type="html">
     
@@ -169,10 +232,10 @@
     </summary>
     
     
-      <category term="总结" scheme="https://crossoverfish.github.io/categories/%E6%80%BB%E7%BB%93/"/>
+      <category term="业务" scheme="https://crossoverfish.github.io/categories/%E4%B8%9A%E5%8A%A1/"/>
     
     
-      <category term="java" scheme="https://crossoverfish.github.io/tags/java/"/>
+      <category term="sql" scheme="https://crossoverfish.github.io/tags/sql/"/>
     
   </entry>
   
@@ -181,7 +244,7 @@
     <link href="https://crossoverfish.github.io/2019/10/03/fang-fa-de-can-shu-chuan-di-ji-zhi/"/>
     <id>https://crossoverfish.github.io/2019/10/03/fang-fa-de-can-shu-chuan-di-ji-zhi/</id>
     <published>2019-10-03T11:53:31.000Z</published>
-    <updated>2021-08-18T01:24:06.207Z</updated>
+    <updated>2021-08-18T09:08:04.629Z</updated>
     
     <summary type="html">
     
@@ -196,12 +259,10 @@
     </summary>
     
     
-      <category term="java" scheme="https://crossoverfish.github.io/categories/java/"/>
-    
-      <category term="bug" scheme="https://crossoverfish.github.io/categories/java/bug/"/>
+      <category term="java基础" scheme="https://crossoverfish.github.io/categories/java%E5%9F%BA%E7%A1%80/"/>
     
     
-      <category term="java base" scheme="https://crossoverfish.github.io/tags/java-base/"/>
+      <category term="bug" scheme="https://crossoverfish.github.io/tags/bug/"/>
     
   </entry>
   
