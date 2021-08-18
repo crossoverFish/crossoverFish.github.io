@@ -315,7 +315,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -457,7 +457,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    473
+                    468
                 </div>
                 
 
@@ -517,10 +517,27 @@ location / {
          proxy_redirect default;
      }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p>测试<br><img src="/images/n1.png" alt="往session塞值"><br><img src="/images/n2.png" alt="去get session的值"><br><img src="/images/n3.png" alt="去get session的值"><br>往92塞值,可以发现91,92这俩个端口都能get到值</p>
+<li><p>测试</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SessionDemoController</span> <span class="token punctuation">{</span>
+ <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${server.port}"</span><span class="token punctuation">)</span>
+ Integer port<span class="token punctuation">;</span>
+
+ <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/set"</span><span class="token punctuation">)</span>
+ <span class="token keyword">public</span> String <span class="token function">setSession</span><span class="token punctuation">(</span>HttpSession session<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     session<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span><span class="token string">"tyu"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">return</span> String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>port<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+
+ <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/get"</span><span class="token punctuation">)</span>
+ <span class="token keyword">public</span> String <span class="token function">getSession</span><span class="token punctuation">(</span>HttpSession session<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">return</span> session<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> port<span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/n1.png" alt="往session塞值"><br><img src="/images/n2.png" alt="去get session的值"><br><img src="/images/n3.png" alt="去get session的值"><br>往92塞值,可以发现91,92这俩个端口都能get到值</p>
 </li>
 </ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果大家没有在 SSM 架构中用过 Spring Session ，可能不太好理解我们在 Spring Boot 中使用 Spring Session 有多么方便，因为在 SSM 架构中，Spring Session 的使用要配置三个地方 ，一个是 web.xml 配置代理过滤器，然后在 Spring 容器中配置 Redis，最后再配置 Spring Session，步骤还是有些繁琐的，而 Spring Boot 中直接帮我们省去了这些繁琐的步骤！不用再去配置 Spring Session。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>SSM 架构中使用 Spring Session ,要配置三个地方 ，一个是 web.xml 配置代理过滤器，然后在 Spring 容器中配置 Redis，最后再配置 Spring Session，步骤还是有些繁琐的，而 Spring Boot 中直接帮我们省去了这些繁琐的步骤！不用再去配置 Spring Session。</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -771,7 +788,7 @@ location / {
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="微服务下最简单的session共享方式">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="微服务下最简单的session共享方式">
                         
                         <span class="card-title">微服务下最简单的session共享方式</span>
                     </div>
@@ -806,7 +823,7 @@ location / {
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="核心活动业务分析">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="核心活动业务分析">
                         
                         <span class="card-title">核心活动业务分析</span>
                     </div>
