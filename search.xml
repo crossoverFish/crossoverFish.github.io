@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>登录认证设计方案</title>
+      <link href="/2021/08/20/deng-lu-ren-zheng-she-ji-fang-an/"/>
+      <url>/2021/08/20/deng-lu-ren-zheng-she-ji-fang-an/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Session-Redis实现Session共享"><a href="#Session-Redis实现Session共享" class="headerlink" title="Session+Redis实现Session共享"></a>Session+Redis实现Session共享</h1><p>当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 ，然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session，当客户端A发送第二次请求的时候，nginx将请求分发给服务器2 （已知服务器2 中无Session），因为客户端自己携带了一个Session，那么服务器2 就可以拿着客户端带来的Session中的ID去Redis中找到Session，找到这个Session后，就能正常执行之后的操作。</p><h1 id="no-session系统"><a href="#no-session系统" class="headerlink" title="no session系统"></a>no session系统</h1><ul><li>JWT: 生成并发给客户端之后，后台是不用存储，客户端访问时会验证其签名、过期时间等再取出里面的信息（如username），再使用该信息直接查询用户信息完成登录验证。jwt自带签名、过期等校验，后台不用存储，缺陷是一旦下发，服务后台无法拒绝携带该jwt的请求（如踢除用户）；</li><li>token+redis： 是自己生成个32位的key，value为用户信息，访问时判断redis里是否有该token，如果有，则加载该用户信息完成登录。服务需要存储下发的每个token及对应的value，维持其过期时间，好处是随时可以删除某个token，阻断该token继续使用.缺点：每次都要进行redis查询。占用redis存储空间。</li></ul><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>springSecurity-JWT</title>
       <link href="/2021/08/18/springsecurity-jwt/"/>
       <url>/2021/08/18/springsecurity-jwt/</url>
@@ -72,9 +85,9 @@
       
         <tags>
             
-            <tag> redis </tag>
-            
             <tag> spring session </tag>
+            
+            <tag> redis </tag>
             
         </tags>
       
@@ -112,9 +125,9 @@
       
         <tags>
             
-            <tag> quartz </tag>
-            
             <tag> redis </tag>
+            
+            <tag> quartz </tag>
             
             <tag> kafka </tag>
             
