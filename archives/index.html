@@ -455,7 +455,11 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                Session+Redis实现Session共享当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 ，然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session，
+                                Sessio系统验证流程:
+
+当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 
+然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session
+当客户端A发送第二
                                 
                             </div>
                             <div class="publish-info">
@@ -1056,7 +1060,7 @@ We’re living t
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">5.3k</span>
+            <span class="white-color">5.5k</span>
             
 
             <br>
