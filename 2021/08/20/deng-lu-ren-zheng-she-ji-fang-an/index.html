@@ -457,14 +457,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    422
+                    775
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
                 
@@ -475,11 +475,23 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Session-Redis实现Session共享"><a href="#Session-Redis实现Session共享" class="headerlink" title="Session+Redis实现Session共享"></a>Session+Redis实现Session共享</h1><p>当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 ，然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session，当客户端A发送第二次请求的时候，nginx将请求分发给服务器2 （已知服务器2 中无Session），因为客户端自己携带了一个Session，那么服务器2 就可以拿着客户端带来的Session中的ID去Redis中找到Session，找到这个Session后，就能正常执行之后的操作。</p>
-<h1 id="no-session系统"><a href="#no-session系统" class="headerlink" title="no session系统"></a>no session系统</h1><ul>
+                <h2 id="Session-Redis实现Session共享"><a href="#Session-Redis实现Session共享" class="headerlink" title="Session+Redis实现Session共享"></a>Session+Redis实现Session共享</h2><p>当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 ，然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session，当客户端A发送第二次请求的时候，nginx将请求分发给服务器2 （已知服务器2 中无Session），因为客户端自己携带了一个Session，那么服务器2 就可以拿着客户端带来的Session中的ID去Redis中找到Session，找到这个Session后，就能正常执行之后的操作。</p>
+<h2 id="no-session系统"><a href="#no-session系统" class="headerlink" title="no session系统"></a>no session系统</h2><ul>
 <li>JWT: 生成并发给客户端之后，后台是不用存储，客户端访问时会验证其签名、过期时间等再取出里面的信息（如username），再使用该信息直接查询用户信息完成登录验证。jwt自带签名、过期等校验，后台不用存储，缺陷是一旦下发，服务后台无法拒绝携带该jwt的请求（如踢除用户）；</li>
 <li>token+redis： 是自己生成个32位的key，value为用户信息，访问时判断redis里是否有该token，如果有，则加载该用户信息完成登录。服务需要存储下发的每个token及对应的value，维持其过期时间，好处是随时可以删除某个token，阻断该token继续使用.缺点：每次都要进行redis查询。占用redis存储空间。</li>
 </ul>
+<h2 id="token和jwt的区别"><a href="#token和jwt的区别" class="headerlink" title="token和jwt的区别"></a>token和jwt的区别</h2><p>相同： 都是访问资源的令牌， 都可以记录用户信息，都是只有验证成功后<br>区别：服务端验证客户端发来的token信息要进行数据的查询操作；JWT验证客户端发来的token信息就不用， 在服务端使用密钥校验就可以，不用数据库的查询。</p>
+<h3 id="Token-验证流程："><a href="#Token-验证流程：" class="headerlink" title="Token 验证流程："></a>Token 验证流程：</h3><ol>
+<li>把用户的用户名和密码发到后端</li>
+<li>后端进行校验，校验成功会生成token, 把token发送给客户端</li>
+<li>客户端自己保存token, 再次请求就要在Http协议的请求头中带着token去访问服务端，和在服务端保存的token信息进行比对校验。</li>
+</ol>
+<h3 id="JWT-验证流程："><a href="#JWT-验证流程：" class="headerlink" title="JWT 验证流程："></a>JWT 验证流程：</h3><ol>
+<li>在头部信息中声明加密算法和常量， 然后把header使用json转化为字符串</li>
+<li>在载荷中声明用户信息，同时还有一些其他的内容；再次使用json 把载荷部分进行转化，转化为字符串</li>
+<li>使用在header中声明的加密算法和每个项目随机生成的secret来进行加密， 把第一步分字符串和第二部分的字符串进行加密， 生成新的字符串。词字符串是独一无二的。</li>
+<li>解密的时候，只要客户端带着JWT来发起请求，服务端就直接使用secret进行解密。</li>
+</ol>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -959,7 +971,7 @@
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">5k</span>
+            <span class="white-color">5.3k</span>
             
 
             <br>
