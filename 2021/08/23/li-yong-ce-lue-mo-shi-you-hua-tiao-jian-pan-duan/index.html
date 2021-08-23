@@ -532,7 +532,9 @@
 </li>
 </ol>
 <p>}</p>
-<pre><code>3. 这是异步通知接口的抽象类.因为前置数据已经在各个实现类准备好了,所以处理通知这部分业务,就可以抽出来公用了
+<pre><code>
+
+3. 这是异步通知接口的抽象类.因为前置数据已经在各个实现类准备好了,所以处理通知这部分业务,就可以抽出来公用了
 ``` java 
 public abstract class AbstractNotifyService implements INotifyService {
     private Logger logger = LoggerFactory.getLogger(AbstractNotifyService.class);
