@@ -4,13 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="记一次使用fastjson拷贝对象的bug, crossoverFish">
+    <meta name="keywords" content="crossoverFish">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="执行下面这行代码
-ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo.class);
-报错fastjson  java.lang.">
+    <meta name="description" content="背景利用策略模式优化过多 if else 代码当业务场景比较复杂,如果if..else过多逻辑会很混乱,后期维护也比较头大,写着写着就会漏掉一些东西我们的业务场景有各种各样的活动组件,每个活动用户参与后可能会给用户发送一些短信或者微信模板消">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +16,7 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>记一次使用fastjson拷贝对象的bug | crossoverFish</title>
+    <title>crossoverFish</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -317,13 +315,13 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        记一次使用fastjson拷贝对象的bug
+                        
                     </div>
                 </div>
             </div>
@@ -433,24 +431,11 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
                 <div class="col s7">
                     
                     <div class="article-tag">
-                        
-                        <a href="/tags/bug/" target="_blank">
-                            <span class="chip bg-color">bug</span>
-                        </a>
-                        
+                        <span class="chip bg-color">无标签</span>
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fa fa-bookmark fa-fw icon-category"></i>
-                        
-                        <a href="/categories/java/" class="post-category" target="_blank">
-                            java
-                        </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -458,7 +443,7 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-09
+                    2021-08-23
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -472,14 +457,14 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    138
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
                 
@@ -490,28 +475,205 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>执行下面这行代码</p>
-<pre class="line-numbers language-java"><code class="language-java">ModelVo modelVo <span class="token operator">=</span> JSONObject<span class="token punctuation">.</span><span class="token function">parseObject</span><span class="token punctuation">(</span>JSONObject<span class="token punctuation">.</span><span class="token function">toJSONString</span><span class="token punctuation">(</span>model<span class="token punctuation">)</span><span class="token punctuation">,</span> ModelVo<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>报错<br><code>fastjson  java.lang.IllegalArgumentException: argument type mismatch</code></p>
-<p><em>原因就是内部类的层次不够。以下面的例子举例</em></p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ModelVo</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> Data data<span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Data</span> <span class="token punctuation">{</span>
-        <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Row<span class="token operator">></span> rows<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Row</span><span class="token punctuation">{</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>应该改成这样</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ModelVo</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> Data data<span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Data</span> <span class="token punctuation">{</span>
-        <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Row<span class="token operator">></span> rows<span class="token punctuation">;</span>
-         <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Row</span><span class="token punctuation">{</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>利用策略模式优化过多 if else 代码<br>当业务场景比较复杂,如果if..else过多逻辑会很混乱,后期维护也比较头大,写着写着就会漏掉一些东西<br>我们的业务场景有各种各样的活动组件,每个活动用户参与后可能会给用户发送一些短信或者微信模板消息,但是数据封装,目标客群可能不太一样,我们要是想统一处理.肯定会有很多if..else区分场景</p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>这是我自己封装的一个发送短信的’工具类’</p>
+<ol>
+<li><p>先写一个异步通知接口,这里面定义了一些抽象方法</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">INotifyService</span> <span class="token punctuation">{</span>
+ <span class="token comment" spellcheck="true">/**
+  * 获取通知类型
+  * @return
+  */</span>
+ NotifyType <span class="token function">getNotifyType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+ <span class="token comment" spellcheck="true">/**
+  * 发送异步消息前置处理
+  * @param param
+  * @return
+  */</span>
+ List<span class="token operator">&lt;</span>NotifyDTO<span class="token operator">></span> <span class="token function">beforeSendNotice</span><span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> param<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+ <span class="token comment" spellcheck="true">/**
+  * 异步通知真正实现接口
+  * @param param 入参
+  */</span>
+ <span class="token keyword">void</span> <span class="token function">dealNotice</span><span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> param<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>这是一个异步通知工厂类,根据通知类型,获取通知对象</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+* 异步通知工厂类
+*/</span>
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NotifyServiceFactory</span> <span class="token punctuation">{</span>
+ <span class="token annotation punctuation">@Autowired</span>
+ <span class="token keyword">private</span> List<span class="token operator">&lt;</span>INotifyService<span class="token operator">></span> notifyServiceList<span class="token punctuation">;</span>
+
+ <span class="token comment" spellcheck="true">/**
+  * 获取通知对象
+  * @param notifyType
+  * @return
+  */</span>
+ <span class="token keyword">public</span> INotifyService <span class="token function">getNotifyService</span><span class="token punctuation">(</span>NotifyType notifyType<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+     <span class="token keyword">if</span> <span class="token punctuation">(</span>notifyServiceList <span class="token operator">!=</span> null <span class="token operator">&amp;&amp;</span> notifyServiceList<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">for</span> <span class="token punctuation">(</span>INotifyService notifyService <span class="token operator">:</span> notifyServiceList<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+             <span class="token keyword">if</span> <span class="token punctuation">(</span>notifyType<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>notifyService<span class="token punctuation">.</span><span class="token function">getNotifyType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                 <span class="token keyword">return</span> notifyService<span class="token punctuation">;</span>
+             <span class="token punctuation">}</span>
+
+             <span class="token keyword">continue</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+     <span class="token punctuation">}</span>
+     <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+<p>}</p>
+<pre><code>3. 这是异步通知接口的抽象类.因为前置数据已经在各个实现类准备好了,所以处理通知这部分业务,就可以抽出来公用了
+``` java 
+public abstract class AbstractNotifyService implements INotifyService {
+    private Logger logger = LoggerFactory.getLogger(AbstractNotifyService.class);
+
+
+    /**
+     * 异步通知类型
+     */
+    private NotifyType notifyType;
+
+    /**
+     * 屏蔽默认构造参数，不允许无参构造
+     */
+    private AbstractNotifyService() { }
+
+    public AbstractNotifyService(NotifyType notifyType) {
+        this.notifyType = notifyType;
+    }
+
+    @Override
+    public NotifyType getNotifyType() {
+        return notifyType;
+    }
+
+    /**
+     * 异步通知前置参数处理方法
+     * @param param
+     * @return
+     */
+    @Override
+    public abstract List&lt;NotifyDTO&gt; beforeSendNotice(Map&lt;String, Object&gt; param);
+
+    /**
+     * 异步通知真正实现接口
+     * @param param 入参
+     */
+    @Override
+    public void dealNotice(Map&lt;String, Object&gt; param) {
+        logger.info("真正开始进行异步通知处理");
+
+        // 先进行前置处理
+        List&lt;NotifyDTO&gt; notifyDTOList = beforeSendNotice(param);
+        logger.debug("要发送内容[{}]", JSONObject.toJSONString(notifyDTOList));
+
+        for (NotifyDTO notifyDTO : notifyDTOList) {
+            if (notifyDTO.isSendWxTemplateMsg()) {
+                try {
+                    logger.info("发送微信模板消息,request=[{}],", JSONObject.toJSONString(notifyDTO.getWxTemplateMsg()));
+                    weChatApi.sendWechatTemplateMsg(notifyDTO.getWxTemplateMsg());
+                } catch (Exception e) {
+                    logger.error("发送模板消息异常 ==&gt; ", e);
+                }
+            }
+
+            if (notifyDTO.isSendSMS()) {
+                try {
+                    logger.info("发送短信：phoneNumber=[{}],smstype=[{}],params=[{}],", notifyDTO.getPhoneNumber(), notifyDTO.getSmsType(), JSONObject.toJSONString(notifyDTO.getSmsParams()));
+                    smsApi.sendSmsByTemplate(notifyDTO.getPhoneNumber(), notifyDTO.getSmsType(), notifyDTO.getSmsParams());
+                } catch (Exception e) {
+                    logger.error("发送短信异常 ==&gt; ", e);
+                }
+            }
+        }
+    }
+}
+</code></pre><ol start="4">
+<li><p>这是异步通知接口的其中一个实现,在里面我们可以具体beforeSendNotice这个方法</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+* 砍价成功异步通知准备参数方法
+*/</span>
+<span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CutPriceSuccessNotifyServiceImpl</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractNotifyService</span> <span class="token keyword">implements</span> <span class="token class-name">INotifyService</span> <span class="token punctuation">{</span>
+ <span class="token keyword">private</span> Logger logger <span class="token operator">=</span> LoggerFactory<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span>CutPriceSuccessNotifyServiceImpl<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+ <span class="token comment" spellcheck="true">// 必须实现默认构造函数</span>
+ <span class="token keyword">public</span> <span class="token function">CutPriceSuccessNotifyServiceImpl</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token comment" spellcheck="true">// 初始化通知类型</span>
+     <span class="token keyword">super</span><span class="token punctuation">(</span>NotifyType<span class="token punctuation">.</span>CUTPRICE_SUCCESS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+
+ <span class="token comment" spellcheck="true">/**
+  * 异步通知前置参数处理方法
+  * 主要目的是准备要发送的参数以及要给哪些人发送
+  * @param param
+  * @return
+  */</span>
+ <span class="token annotation punctuation">@Override</span>
+ <span class="token keyword">public</span> List<span class="token operator">&lt;</span>NotifyDTO<span class="token operator">></span> <span class="token function">beforeSendNotice</span><span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> param<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"开始进行处理砍价成功异步通知 前置处理"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     List<span class="token operator">&lt;</span>NotifyDTO<span class="token operator">></span> notifyDTOList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token comment" spellcheck="true">//参数准备</span>
+     NotifyDTO notifyDTO <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NotifyDTO</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token comment" spellcheck="true">//发送短信</span>
+     <span class="token keyword">if</span> <span class="token punctuation">(</span>isSendSmsType<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token comment" spellcheck="true">//封装notifyDTO</span>
+     <span class="token punctuation">}</span>
+     notifyDTOList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>notifyDTO<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"结束进行处理砍价成功异步通知 前置处理"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">return</span> notifyDTOList<span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>这边是调用通知的入口</p>
+<pre class="line-numbers language-java"><code class="language-java"><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ol>
+<p>/**</p>
+<ul>
+<li><p>异步通知接口</p>
+</li>
+<li><p>/<br>@Service<br>public class NotifyApi implements INotifyApi {<br>  private Logger logger = LoggerFactory.getLogger(NotifyApi.class);</p>
+<p>  @Autowired<br>  private KafkaCoreProvider kafkaCoreProvider;</p>
+<p>  @Autowired<br>  private NotifyServiceFactory notifyServiceFactory;</p>
+<p>  /**</p>
+<ul>
+<li><p>发送通知异步接口</p>
+</li>
+<li><p>有关通知内容需要处理的，统一在此处处理</p>
+</li>
+<li><p>@param notifyType 推送类型</p>
+</li>
+<li><p>@param param 入参</p>
+</li>
+<li><p>/<br>@Override<br>public void sendNotice(NotifyType notifyType, Map&lt;String, Object&gt; param) {<br>  logger.info(“发送异步通知”);<br>  param.put(MarketActivityConstant.NOTIFY_TYPE_KEY, notifyType);<br>  kafkaCoreProvider.sendMessage(KafkaMQConstants.MARKET_CORE_TAGS.SEND_NOTICE_TAGS, “”, param);<br>}</p>
+<p>/**</p>
+</li>
+<li><p>异步通知实际处理接口</p>
+</li>
+<li><p>@param notifyType 推送类型</p>
+</li>
+<li><p>@param param 入参</p>
+</li>
+<li><p>/<br>@Override<br>public void dealNotice(NotifyType notifyType, Map&lt;String, Object&gt; param) {<br>  INotifyService notifyService = notifyServiceFactory.getNotifyService(notifyType);<br>  if (!CheckNull.isNull(notifyService)) {</p>
+<pre><code>  logger.debug("开始处理异步通知内容");
+  notifyService.dealNotice(param);
+  logger.debug("开始处理异步通知内容");</code></pre><p>  }<br>}<br>}</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实也可以使用枚举映射通知类型和处理api,然后根据类型反射获取实例,’SpringBeanFactory.getBean(Class.forName(clazz))’ ,反射获取容器对象处理业务.看自己选择了.</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -688,9 +850,9 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《记一次使用fastjson拷贝对象的bug》
+                    《》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/09/dui-xiang-kao-bei-ceng-ji-bug/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/23/li-yong-ce-lue-mo-shi-you-hua-tiao-jian-pan-duan/" property="cc:attributionName"
                rel="cc:attributionURL">
                 crossoverFish
             </a> 采用
@@ -732,7 +894,7 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
         repo: 'crossoverFish.github.io',
         owner: 'crossoverFish',
         admin: "crossoverFish",
-        id: '2021/08/09/dui-xiang-kao-bei-ceng-ji-bug/',
+        id: '2021/08/23/li-yong-ce-lue-mo-shi-you-hua-tiao-jian-pan-duan/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -753,60 +915,36 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/08/16/yan-shi-xiao-xi/">
+                <a href="/2021/08/23/li-yong-ce-lue-mo-shi-you-hua-tiao-jian-pan-duan/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="延时消息">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">延时消息</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            前言维护调度平台,有个核心功能就是定时任务,我自己比较常用的调度框架是quartz.比如一个常见的业务场景:用户下单后指定时间未支付取消订单.
-实现这类需求,常见的方式有俩种:
-
-轮询定时任务：给定周期内扫描所有未支付的订单，查看时间是否到
+                            背景利用策略模式优化过多 if else 代码当业务场景比较复杂,如果if..else过多逻辑会很混乱,后期维护也比较头大,写着写着就会漏掉一些东西我们的业务场景有各种各样的活动组件,每个活动用户参与后可能会给用户发送一些短信或者微信模板消
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-16
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-23
+                            </span>
                         <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/延时消息/" class="post-category" target="_blank">
-                                    延时消息
-                                </a>
-                            
                             
                         </span>
                     </div>
                 </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/quartz/" target="_blank">
-                        <span class="chip bg-color">quartz</span>
-                    </a>
-                    
-                    <a href="/tags/redis/" target="_blank">
-                        <span class="chip bg-color">redis</span>
-                    </a>
-                    
-                    <a href="/tags/kafka/" target="_blank">
-                        <span class="chip bg-color">kafka</span>
-                    </a>
-                    
-                </div>
+
                 
             </div>
         </div>
@@ -817,59 +955,32 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/08/01/md-chang-yong-yu-fa/">
+                <a href="/2021/08/23/guo-lu-qi-he-lan-jie-qi-de-qu-bie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="md语法">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="过滤器和拦截器的区别">
                         
-                        <span class="card-title">md语法</span>
+                        <span class="card-title">过滤器和拦截器的区别</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            一级标题==周小凤是个大傻子==
-二级标题周小凤
-三级标题周小凤
-四级标题周小凤
-五级标题周小凤
-六级标题
-Item 1
-Item 2
-Item 2a
-Item 2b
+                            过滤器和拦截器的区别:
 
-
-
-正如 Kanye West 所说：
-
-We’re living t
+过滤器 是基于函数回调的，拦截器 则是基于Java的反射机制（动态代理）实现的
+过滤器 依赖Tomcat等容器,而拦截器(Interceptor) 它是一个Spring组件，并由Spring容器管理,是可以单独使用
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-01
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-23
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/md语法/" class="post-category" target="_blank">
-                                    md语法
-                                </a>
-                            
-                            
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/md/" target="_blank">
-                        <span class="chip bg-color">md</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -1013,25 +1124,6 @@ We’re living t
     
 
 </main>
-
-
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-<!-- 代码语言 -->
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-<!-- 代码块复制 -->
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
-<!-- 代码块收缩 -->
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
-<!-- 代码块折行 -->
-<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
 
 
     <footer class="page-footer bg-color">
