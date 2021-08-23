@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crossoverfish.github.io/"/>
-  <updated>2021-08-23T10:30:41.294Z</updated>
+  <updated>2021-08-23T10:33:00.479Z</updated>
   <id>https://crossoverfish.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
+    <title>利用策略模式优化条件判断</title>
     <link href="https://crossoverfish.github.io/2021/08/23/li-yong-ce-lue-mo-shi-you-hua-tiao-jian-pan-duan/"/>
     <id>https://crossoverfish.github.io/2021/08/23/li-yong-ce-lue-mo-shi-you-hua-tiao-jian-pan-duan/</id>
-    <published>2021-08-23T09:40:24.000Z</published>
-    <updated>2021-08-23T10:30:41.294Z</updated>
+    <published>2021-08-23T08:00:09.000Z</published>
+    <updated>2021-08-23T10:33:00.479Z</updated>
     
     <summary type="html">
     
