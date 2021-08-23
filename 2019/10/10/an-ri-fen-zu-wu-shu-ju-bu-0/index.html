@@ -4,13 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="记一次使用fastjson拷贝对象的bug, crossoverFish">
+    <meta name="keywords" content="数据汇总按日分组统计, crossoverFish">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="执行下面这行代码
-ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo.class);
-报错fastjson  java.lang.">
+    <meta name="description" content="前言有个需求需要按日期分组（group by）统计，没有数据补0之前做过类似的需求,那时候因为数据量比较大,业务也想对复杂,是通过定时任务统计前一天的数据到汇总表.然后查询的时候直接从汇总表去查就很easy了这次因为业务比较简单,不想增加代">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +16,7 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>记一次使用fastjson拷贝对象的bug | crossoverFish</title>
+    <title>数据汇总按日分组统计 | crossoverFish</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -317,13 +315,13 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        记一次使用fastjson拷贝对象的bug
+                        数据汇总按日分组统计
                     </div>
                 </div>
             </div>
@@ -434,8 +432,8 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/bug/" target="_blank">
-                            <span class="chip bg-color">bug</span>
+                        <a href="/tags/sql/" target="_blank">
+                            <span class="chip bg-color">sql</span>
                         </a>
                         
                     </div>
@@ -446,8 +444,8 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                        <a href="/categories/java/" class="post-category" target="_blank">
-                            java
+                        <a href="/categories/业务/" class="post-category" target="_blank">
+                            业务
                         </a>
                         
                     </div>
@@ -458,7 +456,7 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-09
+                    2019-10-10
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -472,14 +470,14 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    138
+                    682
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
                 
@@ -490,28 +488,56 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>执行下面这行代码</p>
-<pre class="line-numbers language-java"><code class="language-java">ModelVo modelVo <span class="token operator">=</span> JSONObject<span class="token punctuation">.</span><span class="token function">parseObject</span><span class="token punctuation">(</span>JSONObject<span class="token punctuation">.</span><span class="token function">toJSONString</span><span class="token punctuation">(</span>model<span class="token punctuation">)</span><span class="token punctuation">,</span> ModelVo<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>报错<br><code>fastjson  java.lang.IllegalArgumentException: argument type mismatch</code></p>
-<p><em>原因就是内部类的层次不够。以下面的例子举例</em></p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ModelVo</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> Data data<span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Data</span> <span class="token punctuation">{</span>
-        <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Row<span class="token operator">></span> rows<span class="token punctuation">;</span>
+                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>有个需求需要按日期分组（group by）统计，没有数据补0<br>之前做过类似的需求,那时候因为数据量比较大,业务也想对复杂,是通过定时任务统计前一天的数据到汇总表.然后查询的时候直接从汇总表去查就很easy了<br>这次因为业务比较简单,不想增加代码量,还需要建表,去写个定时任务,使简单的问题复杂化.我需要一张日期表，但我又不想建表。可以union all日期生成一张临时表然后左外连接你需要查询的数据表。</p>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p>打个比方你想查一个最近7天的数据</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token number">a</span><span class="token punctuation">.</span>click_date<span class="token punctuation">,</span> ifnull<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">.</span>count1<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">as</span> count1
+<span class="token keyword">from</span> <span class="token punctuation">(</span>
+         <span class="token keyword">SELECT</span> curdate<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
+         <span class="token keyword">union</span> <span class="token keyword">all</span>
+         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">1</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
+         <span class="token keyword">union</span> <span class="token keyword">all</span>
+         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">2</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
+         <span class="token keyword">union</span> <span class="token keyword">all</span>
+         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">3</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
+         <span class="token keyword">union</span> <span class="token keyword">all</span>
+         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">4</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
+         <span class="token keyword">union</span> <span class="token keyword">all</span>
+         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">5</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
+         <span class="token keyword">union</span> <span class="token keyword">all</span>
+         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">6</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date<span class="token punctuation">)</span> <span class="token number">a</span>
+         <span class="token keyword">left</span> <span class="token keyword">join</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token keyword">date</span><span class="token punctuation">(</span>alarmtime<span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">datetime</span><span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">as</span> count1
+                    <span class="token keyword">from</span> error
+                    <span class="token keyword">where</span> <span class="token keyword">type</span> <span class="token operator">=</span> <span class="token number">1</span>
+                    <span class="token keyword">group</span> <span class="token keyword">by</span> <span class="token keyword">date</span><span class="token punctuation">(</span>alarmtime<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token number">b</span> <span class="token keyword">on</span> <span class="token number">a</span><span class="token punctuation">.</span>click_date <span class="token operator">=</span> <span class="token number">b</span><span class="token punctuation">.</span><span class="token keyword">datetime</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是如果查询条件复杂一些，比如说我想知道<strong>开始时间-结束时间</strong>的数据，这就不像7天，30天这样可以直接写在sql里了，而且如果我想知道一年，你也不可能一直在后面追加一年的日期<br>不过思路是对的，只不过这张日期表我们可以通过代码去拼接sql，通过mybatis的$字符串拼接,这样不管再长的间隔也不需要我们手动拼接了。</p>
+<h3 id="代码展示"><a href="#代码展示" class="headerlink" title="代码展示"></a>代码展示</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">//拿到指定开始时间-结束时间所有的日期</span>
+List<span class="token operator">&lt;</span>String<span class="token operator">></span> dateBetweenDays <span class="token operator">=</span> DateUtil<span class="token punctuation">.</span><span class="token function">getDateBetweenDays</span><span class="token punctuation">(</span>startDate<span class="token punctuation">,</span>endDate<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//遍历日期拼接到sql里</span>
+StringBuilder sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> dateBetweenDays<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">!=</span> dateBetweenDays<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"SELECT '%s' as timeDay union all "</span><span class="token punctuation">,</span> dateBetweenDays<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"SELECT '%s' as timeDay"</span><span class="token punctuation">,</span> dateBetweenDays<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Row</span><span class="token punctuation">{</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>应该改成这样</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ModelVo</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> Data data<span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Data</span> <span class="token punctuation">{</span>
-        <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Row<span class="token operator">></span> rows<span class="token punctuation">;</span>
-         <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Row</span><span class="token punctuation">{</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+HashMap<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> String<span class="token operator">></span> map <span class="token operator">=</span> Maps<span class="token punctuation">.</span><span class="token function">newHashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"activityId"</span><span class="token punctuation">,</span> activityStaticReq<span class="token punctuation">.</span><span class="token function">getActivityId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"table"</span><span class="token punctuation">,</span> sb<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+List<span class="token operator">&lt;</span>Map<span class="token operator">></span> shareResult <span class="token operator">=</span> tfAccShareRecordMapper<span class="token punctuation">.</span><span class="token function">querShare</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">//最后在xml里拼接sql</span>
+<span class="token keyword">select</span> DATE_FORMAT<span class="token punctuation">(</span><span class="token number">a</span><span class="token punctuation">.</span>timeDay<span class="token punctuation">,</span><span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> time<span class="token punctuation">,</span>ifnull<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">.</span>shareNum<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> shareNum<span class="token punctuation">,</span>ifnull<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">.</span>shareCount<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> shareCount<span class="token punctuation">,</span>ifnull<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">.</span>newUserNum<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> newUserNum
+    <span class="token keyword">from</span> <span class="token punctuation">(</span>${<span class="token keyword">table</span>}<span class="token punctuation">)</span> <span class="token number">a</span> <span class="token keyword">left</span> <span class="token keyword">join</span> <span class="token punctuation">(</span> 
+    <span class="token keyword">select</span> DATE_FORMAT<span class="token punctuation">(</span>create_time<span class="token punctuation">,</span> <span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span> dayTime<span class="token punctuation">,</span>
+                    <span class="token function">count</span><span class="token punctuation">(</span>account_id<span class="token punctuation">)</span>                    shareNum<span class="token punctuation">,</span>
+                    <span class="token function">sum</span><span class="token punctuation">(</span>share_record_count<span class="token punctuation">)</span>         shareCount<span class="token punctuation">,</span>
+                    <span class="token function">sum</span><span class="token punctuation">(</span>is_new_user<span class="token punctuation">)</span>                     newUserNum
+                    <span class="token keyword">from</span> tf_acc_share_record o
+                    <span class="token keyword">where</span> o<span class="token punctuation">.</span>activity_id <span class="token operator">=</span> <span class="token comment" spellcheck="true">#{activityId}</span>
+                    <span class="token keyword">group</span> <span class="token keyword">by</span> DATE_FORMAT<span class="token punctuation">(</span>o<span class="token punctuation">.</span>create_time<span class="token punctuation">,</span> <span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span> <span class="token number">b</span> <span class="token keyword">on</span> DATE_FORMAT<span class="token punctuation">(</span><span class="token number">a</span><span class="token punctuation">.</span>timeDay<span class="token punctuation">,</span> <span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">b</span><span class="token punctuation">.</span>dayTime <span class="token keyword">order</span> <span class="token keyword">by</span> <span class="token number">a</span><span class="token punctuation">.</span>timeDay            <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>没有一劳永逸的方案,持续尝试,才能写出更好的代码</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -688,9 +714,9 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《记一次使用fastjson拷贝对象的bug》
+                    《数据汇总按日分组统计》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/09/dui-xiang-kao-bei/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/10/10/an-ri-fen-zu-wu-shu-ju-bu-0/" property="cc:attributionName"
                rel="cc:attributionURL">
                 crossoverFish
             </a> 采用
@@ -732,7 +758,7 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
         repo: 'crossoverFish.github.io',
         owner: 'crossoverFish',
         admin: "crossoverFish",
-        id: '2021/08/09/dui-xiang-kao-bei/',
+        id: '2019/10/10/an-ri-fen-zu-wu-shu-ju-bu-0/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -756,66 +782,6 @@ ModelVo modelVo = JSONObject.parseObject(JSONObject.toJSONString(model), ModelVo
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
-            <div class="card">
-                <a href="/2021/08/16/yan-shi-xiao-xi/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="延时消息">
-                        
-                        <span class="card-title">延时消息</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            前言维护调度平台,有个核心功能就是定时任务,我自己比较常用的调度框架是quartz.比如一个常见的业务场景:用户下单后指定时间未支付取消订单.
-实现这类需求,常见的方式有俩种:
-
-轮询定时任务：给定周期内扫描所有未支付的订单，查看时间是否到
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-16
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/延时消息/" class="post-category" target="_blank">
-                                    延时消息
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/quartz/" target="_blank">
-                        <span class="chip bg-color">quartz</span>
-                    </a>
-                    
-                    <a href="/tags/redis/" target="_blank">
-                        <span class="chip bg-color">redis</span>
-                    </a>
-                    
-                    <a href="/tags/kafka/" target="_blank">
-                        <span class="chip bg-color">kafka</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
-            </div>
             <div class="card">
                 <a href="/2021/08/01/md-chang-yong-yu-fa/">
                     <div class="card-image">
@@ -848,9 +814,9 @@ We’re living t
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-01
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-01
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -868,6 +834,55 @@ We’re living t
                     
                     <a href="/tags/md/" target="_blank">
                         <span class="chip bg-color">md</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/10/03/fang-fa-de-can-shu-chuan-di-ji-zhi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="方法的参数传递机制">
+                        
+                        <span class="card-title">方法的参数传递机制</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            方法的参数传递机制
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/java基础/" class="post-category" target="_blank">
+                                    java基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/bug/" target="_blank">
+                        <span class="chip bg-color">bug</span>
                     </a>
                     
                 </div>
@@ -1015,25 +1030,6 @@ We’re living t
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-<!-- 代码语言 -->
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-<!-- 代码块复制 -->
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
-<!-- 代码块收缩 -->
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
-<!-- 代码块折行 -->
-<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
-
-
     <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
@@ -1041,7 +1037,7 @@ We’re living t
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">6.1k</span>
+            <span class="white-color">6.2k</span>
             
 
             <br>

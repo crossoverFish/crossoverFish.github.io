@@ -4,11 +4,15 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="数据汇总按日分组统计, crossoverFish">
+    <meta name="keywords" content="session和nosession系统, crossoverFish">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="前言有个需求需要按日期分组（group by）统计，没有数据补0之前做过类似的需求,那时候因为数据量比较大,业务也想对复杂,是通过定时任务统计前一天的数据到汇总表.然后查询的时候直接从汇总表去查就很easy了这次因为业务比较简单,不想增加代">
+    <meta name="description" content="Sessio系统验证流程:
+
+当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 
+然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session
+当客户端A发送第二">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +20,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>数据汇总按日分组统计 | crossoverFish</title>
+    <title>session和nosession系统 | crossoverFish</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -315,13 +319,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        数据汇总按日分组统计
+                        session和nosession系统
                     </div>
                 </div>
             </div>
@@ -431,24 +435,11 @@
                 <div class="col s7">
                     
                     <div class="article-tag">
-                        
-                        <a href="/tags/sql/" target="_blank">
-                            <span class="chip bg-color">sql</span>
-                        </a>
-                        
+                        <span class="chip bg-color">无标签</span>
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fa fa-bookmark fa-fw icon-category"></i>
-                        
-                        <a href="/categories/业务/" class="post-category" target="_blank">
-                            业务
-                        </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -456,7 +447,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-10-10
+                    2021-08-20
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -470,7 +461,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    682
+                    962
                 </div>
                 
 
@@ -488,56 +479,38 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>有个需求需要按日期分组（group by）统计，没有数据补0<br>之前做过类似的需求,那时候因为数据量比较大,业务也想对复杂,是通过定时任务统计前一天的数据到汇总表.然后查询的时候直接从汇总表去查就很easy了<br>这次因为业务比较简单,不想增加代码量,还需要建表,去写个定时任务,使简单的问题复杂化.我需要一张日期表，但我又不想建表。可以union all日期生成一张临时表然后左外连接你需要查询的数据表。</p>
-<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p>打个比方你想查一个最近7天的数据</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token number">a</span><span class="token punctuation">.</span>click_date<span class="token punctuation">,</span> ifnull<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">.</span>count1<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">as</span> count1
-<span class="token keyword">from</span> <span class="token punctuation">(</span>
-         <span class="token keyword">SELECT</span> curdate<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
-         <span class="token keyword">union</span> <span class="token keyword">all</span>
-         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">1</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
-         <span class="token keyword">union</span> <span class="token keyword">all</span>
-         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">2</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
-         <span class="token keyword">union</span> <span class="token keyword">all</span>
-         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">3</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
-         <span class="token keyword">union</span> <span class="token keyword">all</span>
-         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">4</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
-         <span class="token keyword">union</span> <span class="token keyword">all</span>
-         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">5</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date
-         <span class="token keyword">union</span> <span class="token keyword">all</span>
-         <span class="token keyword">SELECT</span> date_sub<span class="token punctuation">(</span>curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval <span class="token number">6</span> day<span class="token punctuation">)</span> <span class="token keyword">as</span> click_date<span class="token punctuation">)</span> <span class="token number">a</span>
-         <span class="token keyword">left</span> <span class="token keyword">join</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token keyword">date</span><span class="token punctuation">(</span>alarmtime<span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">datetime</span><span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">as</span> count1
-                    <span class="token keyword">from</span> error
-                    <span class="token keyword">where</span> <span class="token keyword">type</span> <span class="token operator">=</span> <span class="token number">1</span>
-                    <span class="token keyword">group</span> <span class="token keyword">by</span> <span class="token keyword">date</span><span class="token punctuation">(</span>alarmtime<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token number">b</span> <span class="token keyword">on</span> <span class="token number">a</span><span class="token punctuation">.</span>click_date <span class="token operator">=</span> <span class="token number">b</span><span class="token punctuation">.</span><span class="token keyword">datetime</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>但是如果查询条件复杂一些，比如说我想知道<strong>开始时间-结束时间</strong>的数据，这就不像7天，30天这样可以直接写在sql里了，而且如果我想知道一年，你也不可能一直在后面追加一年的日期<br>不过思路是对的，只不过这张日期表我们可以通过代码去拼接sql，通过mybatis的$字符串拼接,这样不管再长的间隔也不需要我们手动拼接了。</p>
-<h3 id="代码展示"><a href="#代码展示" class="headerlink" title="代码展示"></a>代码展示</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">//拿到指定开始时间-结束时间所有的日期</span>
-List<span class="token operator">&lt;</span>String<span class="token operator">></span> dateBetweenDays <span class="token operator">=</span> DateUtil<span class="token punctuation">.</span><span class="token function">getDateBetweenDays</span><span class="token punctuation">(</span>startDate<span class="token punctuation">,</span>endDate<span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//遍历日期拼接到sql里</span>
-StringBuilder sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> dateBetweenDays<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">!=</span> dateBetweenDays<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"SELECT '%s' as timeDay union all "</span><span class="token punctuation">,</span> dateBetweenDays<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"SELECT '%s' as timeDay"</span><span class="token punctuation">,</span> dateBetweenDays<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-HashMap<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> String<span class="token operator">></span> map <span class="token operator">=</span> Maps<span class="token punctuation">.</span><span class="token function">newHashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"activityId"</span><span class="token punctuation">,</span> activityStaticReq<span class="token punctuation">.</span><span class="token function">getActivityId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"table"</span><span class="token punctuation">,</span> sb<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-List<span class="token operator">&lt;</span>Map<span class="token operator">></span> shareResult <span class="token operator">=</span> tfAccShareRecordMapper<span class="token punctuation">.</span><span class="token function">querShare</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">//最后在xml里拼接sql</span>
-<span class="token keyword">select</span> DATE_FORMAT<span class="token punctuation">(</span><span class="token number">a</span><span class="token punctuation">.</span>timeDay<span class="token punctuation">,</span><span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> time<span class="token punctuation">,</span>ifnull<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">.</span>shareNum<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> shareNum<span class="token punctuation">,</span>ifnull<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">.</span>shareCount<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> shareCount<span class="token punctuation">,</span>ifnull<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">.</span>newUserNum<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> newUserNum
-    <span class="token keyword">from</span> <span class="token punctuation">(</span>${<span class="token keyword">table</span>}<span class="token punctuation">)</span> <span class="token number">a</span> <span class="token keyword">left</span> <span class="token keyword">join</span> <span class="token punctuation">(</span> 
-    <span class="token keyword">select</span> DATE_FORMAT<span class="token punctuation">(</span>create_time<span class="token punctuation">,</span> <span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span> dayTime<span class="token punctuation">,</span>
-                    <span class="token function">count</span><span class="token punctuation">(</span>account_id<span class="token punctuation">)</span>                    shareNum<span class="token punctuation">,</span>
-                    <span class="token function">sum</span><span class="token punctuation">(</span>share_record_count<span class="token punctuation">)</span>         shareCount<span class="token punctuation">,</span>
-                    <span class="token function">sum</span><span class="token punctuation">(</span>is_new_user<span class="token punctuation">)</span>                     newUserNum
-                    <span class="token keyword">from</span> tf_acc_share_record o
-                    <span class="token keyword">where</span> o<span class="token punctuation">.</span>activity_id <span class="token operator">=</span> <span class="token comment" spellcheck="true">#{activityId}</span>
-                    <span class="token keyword">group</span> <span class="token keyword">by</span> DATE_FORMAT<span class="token punctuation">(</span>o<span class="token punctuation">.</span>create_time<span class="token punctuation">,</span> <span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span>
-    <span class="token punctuation">)</span> <span class="token number">b</span> <span class="token keyword">on</span> DATE_FORMAT<span class="token punctuation">(</span><span class="token number">a</span><span class="token punctuation">.</span>timeDay<span class="token punctuation">,</span> <span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">b</span><span class="token punctuation">.</span>dayTime <span class="token keyword">order</span> <span class="token keyword">by</span> <span class="token number">a</span><span class="token punctuation">.</span>timeDay            <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>没有一劳永逸的方案,持续尝试,才能写出更好的代码</p>
+                <h2 id="Sessio系统"><a href="#Sessio系统" class="headerlink" title="Sessio系统"></a>Sessio系统</h2><p>验证流程:</p>
+<ul>
+<li>当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 </li>
+<li>然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session</li>
+<li>当客户端A发送第二次请求的时候，nginx将请求分发给服务器2 （已知服务器2 中无Session）</li>
+<li>因为客户端自己携带了一个Session，那么服务器2 就可以拿着客户端带来的Session中的ID去Redis中找到Session，找到这个Session后，就能正常执行之后的操作。</li>
+</ul>
+<p>认证缺点:</p>
+<ul>
+<li><p>对服务器的压力大：因为每个用户经过服务器认证之后，服务器都要做一次记录，通常这些记录都是保存在内存中，而随着认证用户的增多，服务器开销会明显增大。</p>
+</li>
+<li><p>程序扩展性变差：用户认证后，服务器做认证记录，如果认证的记录被保存在内存中的话，这意味着用户下次请求还必须在这台服务器上才能拿到授权的资源，这样在分布式的应用上，相应的限制了负载均衡器的能力，也就意味着限制了扩展的能力。</p>
+</li>
+<li><p>安全性偏低：因为是基于cookie来进行用户识别的，cookie如果被截获，用户就会很容易受到跨站请求伪造（CSRF）的攻击。</p>
+</li>
+</ul>
+<h2 id="no-session系统"><a href="#no-session系统" class="headerlink" title="no session系统"></a>no session系统</h2><p>Token 验证流程：</p>
+<ul>
+<li>把用户的用户名和密码发到后端</li>
+<li>后端进行校验，校验成功会生成token, 把token发送给客户端</li>
+<li>客户端自己保存token, 再次请求就要在Http协议的请求头中带着token去访问服务端，和在服务端保存的token信息进行比对校验。</li>
+</ul>
+<p>token+redis： 是自己生成个32位的key，value为用户信息，访问时判断redis里是否有该token，如果有，则加载该用户信息完成登录。服务需要存储下发的每个token及对应的value，维持其过期时间，好处是随时可以删除某个token，阻断该token继续使用.缺点：每次都要进行redis查询。占用redis存储空间。</p>
+<p>JWT 验证流程：</p>
+<ul>
+<li>在头部信息中声明加密算法和常量， 然后把header使用json转化为字符串</li>
+<li>在载荷中声明用户信息，同时还有一些其他的内容；再次使用json 把载荷部分进行转化，转化为字符串</li>
+<li>使用在header中声明的加密算法和每个项目随机生成的secret来进行加密， 把第一步分字符串和第二部分的字符串进行加密， 生成新的字符串。词字符串是独一无二的。</li>
+<li>解密的时候，只要客户端带着JWT来发起请求，服务端就直接使用secret进行解密。</li>
+</ul>
+<p>JWT: 生成并发给客户端之后，后台是不用存储，客户端访问时会验证其签名、过期时间等再取出里面的信息（如username），再使用该信息直接查询用户信息完成登录验证。jwt自带签名、过期等校验，后台不用存储，缺陷是一旦下发，服务后台无法拒绝携带该jwt的请求（如踢除用户）；</p>
+<p>token和jwt的区别:<br>服务端验证客户端发来的token信息要进行数据的查询操作；JWT验证客户端发来的token信息就不用， 在服务端使用密钥校验就可以，不用数据库的查询。</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -714,9 +687,9 @@ List<span class="token operator">&lt;</span>Map<span class="token operator">></s
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《数据汇总按日分组统计》
+                    《session和nosession系统》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/10/10/an-ri-fen-zu-de-ce-lue/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/20/session-he-nosession-xi-tong/" property="cc:attributionName"
                rel="cc:attributionURL">
                 crossoverFish
             </a> 采用
@@ -758,7 +731,7 @@ List<span class="token operator">&lt;</span>Map<span class="token operator">></s
         repo: 'crossoverFish.github.io',
         owner: 'crossoverFish',
         admin: "crossoverFish",
-        id: '2019/10/10/an-ri-fen-zu-de-ce-lue/',
+        id: '2021/08/20/session-he-nosession-xi-tong/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -779,64 +752,40 @@ List<span class="token operator">&lt;</span>Map<span class="token operator">></s
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/08/01/md-chang-yong-yu-fa/">
+                <a href="/2021/08/20/session-he-nosession-xi-tong/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="md语法">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="session和nosession系统">
                         
-                        <span class="card-title">md语法</span>
+                        <span class="card-title">session和nosession系统</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            一级标题==周小凤是个大傻子==
-二级标题周小凤
-三级标题周小凤
-四级标题周小凤
-五级标题周小凤
-六级标题
-Item 1
-Item 2
-Item 2a
-Item 2b
+                            Sessio系统验证流程:
 
-
-
-正如 Kanye West 所说：
-
-We’re living t
+当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 
+然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session
+当客户端A发送第二
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-01
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-20
+                            </span>
                         <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/md语法/" class="post-category" target="_blank">
-                                    md语法
-                                </a>
-                            
                             
                         </span>
                     </div>
                 </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/md/" target="_blank">
-                        <span class="chip bg-color">md</span>
-                    </a>
-                    
-                </div>
+
                 
             </div>
         </div>
@@ -847,31 +796,33 @@ We’re living t
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/10/03/fang-fa-de-can-shu-chuan-di-ji-zhi/">
+                <a href="/2021/08/18/springsecurity/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="方法的参数传递机制">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="springSecurity源码学习">
                         
-                        <span class="card-title">方法的参数传递机制</span>
+                        <span class="card-title">springSecurity源码学习</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            方法的参数传递机制
+                            前言使用springboot+springSecurity+jwt实现基于token的权限管理
+用户认证
+UsernamePasswordAuthenticationFilter过滤器获取用户登录的信息,调用authenticationMa
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-03
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-18
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/java基础/" class="post-category" target="_blank">
-                                    java基础
+                            <a href="/categories/框架/" class="post-category" target="_blank">
+                                    框架
                                 </a>
                             
                             
@@ -881,8 +832,12 @@ We’re living t
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/bug/" target="_blank">
-                        <span class="chip bg-color">bug</span>
+                    <a href="/tags/jwt/" target="_blank">
+                        <span class="chip bg-color">jwt</span>
+                    </a>
+                    
+                    <a href="/tags/spring-security/" target="_blank">
+                        <span class="chip bg-color">spring-security</span>
                     </a>
                     
                 </div>
@@ -1037,7 +992,7 @@ We’re living t
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">6.1k</span>
+            <span class="white-color">6.2k</span>
             
 
             <br>

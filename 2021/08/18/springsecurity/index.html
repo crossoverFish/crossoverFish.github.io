@@ -4,15 +4,13 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="登录认证设计方案, crossoverFish">
+    <meta name="keywords" content="springSecurity源码学习, crossoverFish">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="Sessio系统验证流程:
-
-当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 
-然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session
-当客户端A发送第二">
+    <meta name="description" content="前言使用springboot+springSecurity+jwt实现基于token的权限管理
+用户认证
+UsernamePasswordAuthenticationFilter过滤器获取用户登录的信息,调用authenticationMa">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +18,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>登录认证设计方案 | crossoverFish</title>
+    <title>springSecurity源码学习 | crossoverFish</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -319,13 +317,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        登录认证设计方案
+                        springSecurity源码学习
                     </div>
                 </div>
             </div>
@@ -435,11 +433,28 @@
                 <div class="col s7">
                     
                     <div class="article-tag">
-                        <span class="chip bg-color">无标签</span>
+                        
+                        <a href="/tags/jwt/" target="_blank">
+                            <span class="chip bg-color">jwt</span>
+                        </a>
+                        
+                        <a href="/tags/spring-security/" target="_blank">
+                            <span class="chip bg-color">spring-security</span>
+                        </a>
+                        
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                        <a href="/categories/框架/" class="post-category" target="_blank">
+                            框架
+                        </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -447,7 +462,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-20
+                    2021-08-18
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -461,7 +476,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    962
+                    604
                 </div>
                 
 
@@ -479,38 +494,118 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Sessio系统"><a href="#Sessio系统" class="headerlink" title="Sessio系统"></a>Sessio系统</h2><p>验证流程:</p>
-<ul>
-<li>当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 </li>
-<li>然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session</li>
-<li>当客户端A发送第二次请求的时候，nginx将请求分发给服务器2 （已知服务器2 中无Session）</li>
-<li>因为客户端自己携带了一个Session，那么服务器2 就可以拿着客户端带来的Session中的ID去Redis中找到Session，找到这个Session后，就能正常执行之后的操作。</li>
-</ul>
-<p>认证缺点:</p>
-<ul>
-<li><p>对服务器的压力大：因为每个用户经过服务器认证之后，服务器都要做一次记录，通常这些记录都是保存在内存中，而随着认证用户的增多，服务器开销会明显增大。</p>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>使用springboot+springSecurity+jwt实现基于token的权限管理</p>
+<h2 id="用户认证"><a href="#用户认证" class="headerlink" title="用户认证"></a>用户认证</h2><ol>
+<li><p>UsernamePasswordAuthenticationFilter过滤器获取用户登录的信息,调用authenticationManager.authenticate()进行身份验证</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> Authentication <span class="token function">attemptAuthentication</span><span class="token punctuation">(</span>HttpServletRequest request<span class="token punctuation">,</span>
+                                             HttpServletResponse response<span class="token punctuation">)</span> <span class="token keyword">throws</span> AuthenticationException <span class="token punctuation">{</span>
+
+     <span class="token comment" spellcheck="true">// 从输入流中获取到登录的信息</span>
+     <span class="token keyword">try</span> <span class="token punctuation">{</span>
+         LoginUser loginUser <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectMapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">readValue</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> LoginUser<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         rememberMe<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>loginUser<span class="token punctuation">.</span><span class="token function">getRememberMe</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> null <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> loginUser<span class="token punctuation">.</span><span class="token function">getRememberMe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">return</span> authenticationManager<span class="token punctuation">.</span><span class="token function">authenticate</span><span class="token punctuation">(</span>
+                 <span class="token keyword">new</span> <span class="token class-name">UsernamePasswordAuthenticationToken</span><span class="token punctuation">(</span>loginUser<span class="token punctuation">.</span><span class="token function">getUsername</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> loginUser<span class="token punctuation">.</span><span class="token function">getPassword</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+         <span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+ <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p>程序扩展性变差：用户认证后，服务器做认证记录，如果认证的记录被保存在内存中的话，这意味着用户下次请求还必须在这台服务器上才能拿到授权的资源，这样在分布式的应用上，相应的限制了负载均衡器的能力，也就意味着限制了扩展的能力。</p>
+<li><p>ProviderManager是authenticationManager的一个默认实现,委托给配置好的AuthenticationProvider，每个AuthenticationProvider会轮流检查身份认证,调用retrieveUser方法。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> Authentication <span class="token function">authenticate</span><span class="token punctuation">(</span>Authentication authentication<span class="token punctuation">)</span> <span class="token keyword">throws</span> AuthenticationException <span class="token punctuation">{</span>
+     Assert<span class="token punctuation">.</span><span class="token function">isInstanceOf</span><span class="token punctuation">(</span>UsernamePasswordAuthenticationToken<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> authentication<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>messages<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token string">"AbstractUserDetailsAuthenticationProvider.onlySupports"</span><span class="token punctuation">,</span> <span class="token string">"Only UsernamePasswordAuthenticationToken is supported"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     String username <span class="token operator">=</span> authentication<span class="token punctuation">.</span><span class="token function">getPrincipal</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> null <span class="token operator">?</span> <span class="token string">"NONE_PROVIDED"</span> <span class="token operator">:</span> authentication<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">boolean</span> cacheWasUsed <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+     UserDetails user <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>userCache<span class="token punctuation">.</span><span class="token function">getUserFromCache</span><span class="token punctuation">(</span>username<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">if</span> <span class="token punctuation">(</span>user <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         cacheWasUsed <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+
+         <span class="token keyword">try</span> <span class="token punctuation">{</span>
+             user <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">retrieveUser</span><span class="token punctuation">(</span>username<span class="token punctuation">,</span> <span class="token punctuation">(</span>UsernamePasswordAuthenticationToken<span class="token punctuation">)</span>authentication<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">UsernameNotFoundException</span> var6<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+             <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"User '"</span> <span class="token operator">+</span> username <span class="token operator">+</span> <span class="token string">"' not found"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+             <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>hideUserNotFoundExceptions<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                 <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BadCredentialsException</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>messages<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token string">"AbstractUserDetailsAuthenticationProvider.badCredentials"</span><span class="token punctuation">,</span> <span class="token string">"Bad credentials"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+             <span class="token punctuation">}</span>
+
+             <span class="token keyword">throw</span> var6<span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+
+         Assert<span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> <span class="token string">"retrieveUser returned null - a violation of the interface contract"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+
+     <span class="token keyword">try</span> <span class="token punctuation">{</span>
+         <span class="token keyword">this</span><span class="token punctuation">.</span>preAuthenticationChecks<span class="token punctuation">.</span><span class="token function">check</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">additionalAuthenticationChecks</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> <span class="token punctuation">(</span>UsernamePasswordAuthenticationToken<span class="token punctuation">)</span>authentication<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">AuthenticationException</span> var7<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>cacheWasUsed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+             <span class="token keyword">throw</span> var7<span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+
+         cacheWasUsed <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+         user <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">retrieveUser</span><span class="token punctuation">(</span>username<span class="token punctuation">,</span> <span class="token punctuation">(</span>UsernamePasswordAuthenticationToken<span class="token punctuation">)</span>authentication<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">this</span><span class="token punctuation">.</span>preAuthenticationChecks<span class="token punctuation">.</span><span class="token function">check</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">additionalAuthenticationChecks</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> <span class="token punctuation">(</span>UsernamePasswordAuthenticationToken<span class="token punctuation">)</span>authentication<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+
+     <span class="token keyword">this</span><span class="token punctuation">.</span>postAuthenticationChecks<span class="token punctuation">.</span><span class="token function">check</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>cacheWasUsed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">this</span><span class="token punctuation">.</span>userCache<span class="token punctuation">.</span><span class="token function">putUserInCache</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+
+     Object principalToReturn <span class="token operator">=</span> user<span class="token punctuation">;</span>
+     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>forcePrincipalAsString<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         principalToReturn <span class="token operator">=</span> user<span class="token punctuation">.</span><span class="token function">getUsername</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+
+     <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">createSuccessAuthentication</span><span class="token punctuation">(</span>principalToReturn<span class="token punctuation">,</span> authentication<span class="token punctuation">,</span> user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p>安全性偏低：因为是基于cookie来进行用户识别的，cookie如果被截获，用户就会很容易受到跨站请求伪造（CSRF）的攻击。</p>
+<li><p>验证身份就是加载响应的UserDetails，看看是否和用户输入的账号、密码、权限等信息匹配。此步骤由实现AuthenticationProvider的DaoAuthenticationProvider（它利用UserDetailsService验证用户名、密码和授权）处理。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">protected</span> <span class="token keyword">final</span> UserDetails <span class="token function">retrieveUser</span><span class="token punctuation">(</span>String username<span class="token punctuation">,</span> UsernamePasswordAuthenticationToken authentication<span class="token punctuation">)</span> <span class="token keyword">throws</span> AuthenticationException <span class="token punctuation">{</span>
+     <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">prepareTimingAttackProtection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+     <span class="token keyword">try</span> <span class="token punctuation">{</span>
+         UserDetails loadedUser <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getUserDetailsService</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">loadUserByUsername</span><span class="token punctuation">(</span>username<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">if</span> <span class="token punctuation">(</span>loadedUser <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+             <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InternalAuthenticationServiceException</span><span class="token punctuation">(</span><span class="token string">"UserDetailsService returned null, which is an interface contract violation"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+             <span class="token keyword">return</span> loadedUser<span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">UsernameNotFoundException</span> var4<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">mitigateAgainstTimingAttack</span><span class="token punctuation">(</span>authentication<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">throw</span> var4<span class="token punctuation">;</span>
+     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InternalAuthenticationServiceException</span> var5<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">throw</span> var5<span class="token punctuation">;</span>
+     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> var6<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InternalAuthenticationServiceException</span><span class="token punctuation">(</span>var6<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> var6<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+ <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="4">
+<li>这一步就是将获取到的userDetails根据用户名作密码比对<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">additionalAuthenticationChecks</span><span class="token punctuation">(</span>UserDetails userDetails<span class="token punctuation">,</span> UsernamePasswordAuthenticationToken authentication<span class="token punctuation">)</span> <span class="token keyword">throws</span> AuthenticationException <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>authentication<span class="token punctuation">.</span><span class="token function">getCredentials</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"Authentication failed: no credentials provided"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BadCredentialsException</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>messages<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token string">"AbstractUserDetailsAuthenticationProvider.badCredentials"</span><span class="token punctuation">,</span> <span class="token string">"Bad credentials"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      String presentedPassword <span class="token operator">=</span> authentication<span class="token punctuation">.</span><span class="token function">getCredentials</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>passwordEncoder<span class="token punctuation">.</span><span class="token function">matches</span><span class="token punctuation">(</span>presentedPassword<span class="token punctuation">,</span> userDetails<span class="token punctuation">.</span><span class="token function">getPassword</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"Authentication failed: password does not match stored value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BadCredentialsException</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>messages<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token string">"AbstractUserDetailsAuthenticationProvider.badCredentials"</span><span class="token punctuation">,</span> <span class="token string">"Bad credentials"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-</ul>
-<h2 id="no-session系统"><a href="#no-session系统" class="headerlink" title="no session系统"></a>no session系统</h2><p>Token 验证流程：</p>
+</ol>
+</li>
+</ol>
+<p>总结:</p>
 <ul>
-<li>把用户的用户名和密码发到后端</li>
-<li>后端进行校验，校验成功会生成token, 把token发送给客户端</li>
-<li>客户端自己保存token, 再次请求就要在Http协议的请求头中带着token去访问服务端，和在服务端保存的token信息进行比对校验。</li>
+<li>class extends UsernamePasswordAuthenticationFilter,这个过滤器会拦截表单登录提交的action,它会委托认证管理器authenticationManager来验证登录</li>
+<li>class implements UserDetailsService,重写loadUserByUsername(),查库获取用户信息</li>
+<li>class implements AuthenticationProvider, 真正验证登录的类,authenticate()中验证登录凭证</li>
 </ul>
-<p>token+redis： 是自己生成个32位的key，value为用户信息，访问时判断redis里是否有该token，如果有，则加载该用户信息完成登录。服务需要存储下发的每个token及对应的value，维持其过期时间，好处是随时可以删除某个token，阻断该token继续使用.缺点：每次都要进行redis查询。占用redis存储空间。</p>
-<p>JWT 验证流程：</p>
-<ul>
-<li>在头部信息中声明加密算法和常量， 然后把header使用json转化为字符串</li>
-<li>在载荷中声明用户信息，同时还有一些其他的内容；再次使用json 把载荷部分进行转化，转化为字符串</li>
-<li>使用在header中声明的加密算法和每个项目随机生成的secret来进行加密， 把第一步分字符串和第二部分的字符串进行加密， 生成新的字符串。词字符串是独一无二的。</li>
-<li>解密的时候，只要客户端带着JWT来发起请求，服务端就直接使用secret进行解密。</li>
-</ul>
-<p>JWT: 生成并发给客户端之后，后台是不用存储，客户端访问时会验证其签名、过期时间等再取出里面的信息（如username），再使用该信息直接查询用户信息完成登录验证。jwt自带签名、过期等校验，后台不用存储，缺陷是一旦下发，服务后台无法拒绝携带该jwt的请求（如踢除用户）；</p>
-<p>token和jwt的区别:<br>服务端验证客户端发来的token信息要进行数据的查询操作；JWT验证客户端发来的token信息就不用， 在服务端使用密钥校验就可以，不用数据库的查询。</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -687,9 +782,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《登录认证设计方案》
+                    《springSecurity源码学习》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/20/deng-lu-ren-zheng-she-ji-fang-an/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/18/springsecurity/" property="cc:attributionName"
                rel="cc:attributionURL">
                 crossoverFish
             </a> 采用
@@ -731,7 +826,7 @@
         repo: 'crossoverFish.github.io',
         owner: 'crossoverFish',
         admin: "crossoverFish",
-        id: '2021/08/20/deng-lu-ren-zheng-she-ji-fang-an/',
+        id: '2021/08/18/springsecurity/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -752,18 +847,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/08/20/deng-lu-ren-zheng-she-ji-fang-an/">
+                <a href="/2021/08/20/session-he-nosession-xi-tong/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="登录认证设计方案">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="session和nosession系统">
                         
-                        <span class="card-title">登录认证设计方案</span>
+                        <span class="card-title">session和nosession系统</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -777,15 +871,14 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-20
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-20
+                        </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
@@ -796,21 +889,19 @@
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/08/18/springsecurity-jwt/">
+                <a href="/2021/08/18/easyexcel/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="springSecurity-JWT">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="easyexcel">
                         
-                        <span class="card-title">springSecurity-JWT</span>
+                        <span class="card-title">easyexcel</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            前言使用springboot+springSecurity+jwt实现基于token的权限管理
-用户认证
-UsernamePasswordAuthenticationFilter过滤器获取用户登录的信息,调用authenticationMa
+                            前言Java解析、生成Excel比较有名的框架有Apache poi、jxl。但他们都存在一个严重的问题就是非常的耗内存，poi有一套SAX模式的API可以一定程度的解决一些内存溢出的问题，但POI还是有一些缺陷，比如07版Excel解压缩
                         
                     </div>
                     <div class="publish-info">
@@ -832,12 +923,8 @@ UsernamePasswordAuthenticationFilter过滤器获取用户登录的信息,调用a
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/jwt/" target="_blank">
-                        <span class="chip bg-color">jwt</span>
-                    </a>
-                    
-                    <a href="/tags/spring-security/" target="_blank">
-                        <span class="chip bg-color">spring-security</span>
+                    <a href="/tags/easyexcel/" target="_blank">
+                        <span class="chip bg-color">easyexcel</span>
                     </a>
                     
                 </div>
@@ -992,7 +1079,7 @@ UsernamePasswordAuthenticationFilter过滤器获取用户登录的信息,调用a
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">6.1k</span>
+            <span class="white-color">6.2k</span>
             
 
             <br>
