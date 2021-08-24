@@ -9,8 +9,10 @@
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
     <meta name="description" content="砍价活动用户发起砍价，其他用户接受砍价邀请并完成砍价操作,砍价完成以后，可前往订单页面依据砍价后的最终产品价格并进行下单支付
-拼团活动用户发起商品拼团，其他用户参与完成拼团,拼团完成后，用户可前往订单页面查看拼团后的最终成交价格
-限时折扣通">
+
+团长选择商品发起砍价,创建拼团记录.
+团长可以自砍一刀,砍价成功后,生成砍价好友榜,展示帮砍记录
+团长生成二维码">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -459,14 +461,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    375
+                    905
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
                 
@@ -478,13 +480,42 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="砍价活动"><a href="#砍价活动" class="headerlink" title="砍价活动"></a>砍价活动</h2><p>用户发起砍价，其他用户接受砍价邀请并完成砍价操作,砍价完成以后，可前往订单页面依据砍价后的最终产品价格并进行下单支付</p>
-<h2 id="拼团活动"><a href="#拼团活动" class="headerlink" title="拼团活动"></a>拼团活动</h2><p>用户发起商品拼团，其他用户参与完成拼团,拼团完成后，用户可前往订单页面查看拼团后的最终成交价格</p>
-<h2 id="限时折扣"><a href="#限时折扣" class="headerlink" title="限时折扣"></a>限时折扣</h2><p>通过商品在指定时间内按活动价（三种设置方式：固定活动价、按折扣、按减价）售卖的方式，吸引并刺激用户下单购买，提高店铺浏览量及销售量。</p>
-<h2 id="大转盘"><a href="#大转盘" class="headerlink" title="大转盘"></a>大转盘</h2><p>设置转盘抽奖活动，粉丝进入活动界面，点击开始抽奖，即有几率获得不同类型的奖品。</p>
-<h2 id="登录流程"><a href="#登录流程" class="headerlink" title="登录流程"></a>登录流程</h2><ul>
+<ol>
+<li>团长选择商品发起砍价,创建拼团记录.</li>
+<li>团长可以自砍一刀,砍价成功后,生成砍价好友榜,展示帮砍记录</li>
+<li>团长生成二维码分享给团员,团员帮砍</li>
+<li>如果达到最高砍价金额或者最高砍价次数,砍价无效</li>
+<li>达到最高可砍提示用户可以下单支付<h2 id="拼团活动"><a href="#拼团活动" class="headerlink" title="拼团活动"></a>拼团活动</h2>用户发起商品拼团，其他用户参与完成拼团,拼团完成后，用户可前往订单页面查看拼团后的最终成交价格</li>
+<li>团长下单拼团,创建拼团记录,支付成功后异步更新拼团状态为进行中</li>
+<li>进入拼团详情页面生成二维码,分享团员</li>
+<li>团员扫码下单参团,支付成功后异步更新订单状态为已成团<h2 id="限时折扣"><a href="#限时折扣" class="headerlink" title="限时折扣"></a>限时折扣</h2>通过商品在指定时间内按活动价（三种设置方式：固定活动价、按折扣、按减价）售卖的方式，吸引并刺激用户下单购买，提高店铺浏览量及销售量。<h2 id="大转盘"><a href="#大转盘" class="headerlink" title="大转盘"></a>大转盘</h2>设置转盘抽奖活动，粉丝进入活动界面，点击开始抽奖，即有几率获得不同类型的奖品。</li>
+</ol>
+<h2 id="账号更新"><a href="#账号更新" class="headerlink" title="账号更新"></a>账号更新</h2><ul>
 <li>h5 账户表有登录手机号的记录,查询账户信息;没有手机号,新增一条记录</li>
 <li>小程序 有登录openId的记录,更新记录.没有openId,新增记录,如果h5登录产生的记录与当前手机号一致,合并当前手机号记录到h5记录,当前openid记录置为无效 </li>
 <li>公众号 有登录openId的记录,更新记录,没有openId,新增记录</li>
+</ul>
+<h2 id="登录流程"><a href="#登录流程" class="headerlink" title="登录流程"></a>登录流程</h2><ul>
+<li><p>小程序登录,解析jwt token,获取userId,redis获取userId对应的密钥,解析token,保存用户信息到session</p>
+</li>
+<li><p>h5 登录校验,session中不存在登录用户信息,如果是h5,跳转到登录页面,输入手机号验证码登录验证,成功后将用户信息塞到session中</p>
+</li>
+<li><p>微信 登录校验,调用微信授权url获取临时CODE,重定向至回调地址,根据临时code认证获取ACCESS_TOKEN和用户openId,保存用户授权access_token至redis中,如果过期,将通过refresh_token重新获取,通过access_token获取用户信息,保存或者更新用户信息,重定向到自动登录的接口,将用户信息塞到session中,重定向到登陆之前的页面,绑定手机号登录</p>
+<pre class="line-numbers language-java"><code class="language-java">  <span class="token comment" spellcheck="true">/**
+   * 微信网页授权URL地址
+   * 获取临时CODE
+   */</span>
+  <span class="token keyword">private</span> String webAuthUrl <span class="token operator">=</span> <span class="token string">"https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect"</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 网页授权的完整URL为 ==> https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx547e0ea14ea62cd7&amp;redirect_uri=https%3A%2F%2Ft.hualedou.cn%2Fmarket-gateweb%2FweChat%2FgetOpenId&amp;response_type=code&amp;scope=snsapi_userinfo&amp;state=111036513#wechat_redirect</span>
+
+  <span class="token comment" spellcheck="true">/**
+   * 网页授权接口URL，通过CODE换取网页ACCESS_TOKEN
+   * 获取公众号用户信息URL
+   * 包含OpenId
+   */</span>
+  <span class="token keyword">public</span> String webTokenUrl <span class="token operator">=</span> <span class="token string">"https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&amp;secret=SECRET&amp;code=CODE&amp;grant_type=authorization_code"</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 获取网页授权access_token以及用户openId的url为 ==> https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx547e0ea14ea62cd7&amp;secret=53e8717186cf3952fd8067ec160cbffe&amp;code=0414uSll2bq0C74tKOll2WAePU04uSlx&amp;grant_type=authorization_code</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
 </ul>
 <script>
         document.querySelectorAll('.github-emoji')
@@ -985,7 +1016,7 @@
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">7.5k</span>
+            <span class="white-color">8.1k</span>
             
 
             <br>
