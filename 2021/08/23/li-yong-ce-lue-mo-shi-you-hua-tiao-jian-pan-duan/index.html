@@ -51,9 +51,9 @@
         })();
     </script>
 
+<link rel="alternate" href="/atom.xml" title="crossoverFish" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><link rel="alternate" href="/atom.xml" title="crossoverFish" type="application/atom+xml">
-</head>
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body>
 
@@ -539,30 +539,26 @@
  <span class="token annotation punctuation">@Autowired</span>
  <span class="token keyword">private</span> ISmsApi smsApi<span class="token punctuation">;</span>
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ <span class="token keyword">private</span> NotifyType notifyType<span class="token punctuation">;</span>
+
+ <span class="token comment" spellcheck="true">/**
+  * 屏蔽默认构造参数，不允许无参构造
+  */</span>
+ <span class="token keyword">private</span> <span class="token function">AbstractNotifyService</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+ <span class="token keyword">public</span> <span class="token function">AbstractNotifyService</span><span class="token punctuation">(</span>NotifyType notifyType<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">this</span><span class="token punctuation">.</span>notifyType <span class="token operator">=</span> notifyType<span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+
+ <span class="token annotation punctuation">@Override</span>
+ <span class="token keyword">public</span> NotifyType <span class="token function">getNotifyType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">return</span> notifyType<span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 </ol>
 <pre><code>/**
- * 异步通知类型
- */
-private NotifyType notifyType;
-
-/**
- * 屏蔽默认构造参数，不允许无参构造
- */
-private AbstractNotifyService() { }
-
-public AbstractNotifyService(NotifyType notifyType) {
-    this.notifyType = notifyType;
-}
-
-@Override
-public NotifyType getNotifyType() {
-    return notifyType;
-}
-
-
-/**
  * 异步通知前置参数处理方法
  * @param param
  * @return
@@ -926,9 +922,45 @@ public class CutPriceSuccessNotifyServiceImpl extends AbstractNotifyService impl
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2021/08/23/li-yong-ce-lue-mo-shi-you-hua-tiao-jian-pan-duan/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="利用策略模式优化条件判断">
+                        
+                        <span class="card-title">利用策略模式优化条件判断</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            背景利用策略模式优化过多 if else 代码当业务场景比较复杂,如果if..else过多逻辑会很混乱,后期维护也比较头大,写着写着就会漏掉一些东西我们的业务场景有各种各样的活动组件,每个活动用户参与后可能会给用户发送一些短信或者微信模板消
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-23
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2021/08/23/guo-lu-qi-he-lan-jie-qi-de-qu-bie/">
                     <div class="card-image">
@@ -949,46 +981,8 @@ public class CutPriceSuccessNotifyServiceImpl extends AbstractNotifyService impl
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-23
-                        </span>
-                        <span class="publish-author">
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/08/20/session-he-nosession-xi-tong/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="session和nosession系统">
-                        
-                        <span class="card-title">session和nosession系统</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Sessio系统验证流程:
-
-当客户端A第一次发送请求后，nginx将这个请求分发给服务器1 
-然后将服务器1 产生的Session 放入Redis中，此时客户端A、服务器1 和Redis中都会有一个相同的Session
-当客户端A发送第二
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-20
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-23
                             </span>
                         <span class="publish-author">
                             
