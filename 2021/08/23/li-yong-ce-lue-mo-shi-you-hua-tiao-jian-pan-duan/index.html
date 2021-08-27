@@ -457,7 +457,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    961
+                    942
                 </div>
                 
 
@@ -630,7 +630,7 @@
  <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 </ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>为了让类的职责更加单一、代码更加清晰。这里运用了工厂模式，虽然代码量增加了，但是后期维护拓展会很方便，比较符合开闭原则。当然如果只是简单的创建一个类，不放到spring容器中，更推荐使用静态内部类这种懒加载的方式能避免创建不必要的对象。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>为了让类的职责更加单一、代码更加清晰。这里运用了工厂模式，虽然代码量增加了，但是后期维护拓展会很方便，比较符合开闭原则。当然还有种思路，在枚举里维护api class和类型的关系。根据类型反射创建对象</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
