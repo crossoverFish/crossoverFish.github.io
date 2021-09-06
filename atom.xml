@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crossoverfish.github.io/"/>
-  <updated>2021-08-27T06:46:49.091Z</updated>
+  <updated>2021-09-06T01:16:37.884Z</updated>
   <id>https://crossoverfish.github.io/</id>
   
   <author>
@@ -17,11 +17,59 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>笔记</title>
+    <link href="https://crossoverfish.github.io/2021/09/05/bi-ji/"/>
+    <id>https://crossoverfish.github.io/2021/09/05/bi-ji/</id>
+    <published>2021-09-05T14:18:32.000Z</published>
+    <updated>2021-09-06T01:16:37.884Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;[toc]&lt;/p&gt;
+&lt;h1 id=&quot;1-mysql&quot;&gt;&lt;a href=&quot;#1-mysql&quot; class=&quot;headerlink&quot; title=&quot;1. mysql&quot;&gt;&lt;/a&gt;1. mysql&lt;/h1&gt;&lt;h2 id=&quot;1-Mysql锁机制&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>mysql事务</title>
+    <link href="https://crossoverfish.github.io/2021/09/05/mysql-shi-wu/"/>
+    <id>https://crossoverfish.github.io/2021/09/05/mysql-shi-wu/</id>
+    <published>2021-09-05T01:55:17.000Z</published>
+    <updated>2021-09-05T14:10:14.564Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;测试幻读&quot;&gt;&lt;a href=&quot;#测试幻读&quot; class=&quot;headerlink&quot; title=&quot;测试幻读&quot;&gt;&lt;/a&gt;测试幻读&lt;/h2&gt;&lt;p&gt;幻读在rr隔离级别下,因为mvcc机制,解决了读数据情况下的幻读问题 ,而对于修改的操作依旧存在幻读问题&lt;/p&gt;
+&lt;pre
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>利用策略模式优化条件判断</title>
     <link href="https://crossoverfish.github.io/2021/08/23/li-yong-ce-lue-mo-shi-you-hua-tiao-jian-pan-duan/"/>
     <id>https://crossoverfish.github.io/2021/08/23/li-yong-ce-lue-mo-shi-you-hua-tiao-jian-pan-duan/</id>
     <published>2021-08-23T08:00:09.000Z</published>
-    <updated>2021-08-27T06:46:49.091Z</updated>
+    <updated>2021-08-27T06:49:26.324Z</updated>
     
     <summary type="html">
     
@@ -70,7 +118,7 @@
     <link href="https://crossoverfish.github.io/2021/08/20/session-he-nosession-xi-tong/"/>
     <id>https://crossoverfish.github.io/2021/08/20/session-he-nosession-xi-tong/</id>
     <published>2021-08-20T03:08:08.000Z</published>
-    <updated>2021-08-24T12:01:47.236Z</updated>
+    <updated>2021-08-30T02:06:22.902Z</updated>
     
     <summary type="html">
     
@@ -179,7 +227,7 @@
     <link href="https://crossoverfish.github.io/2021/08/17/he-xin-huo-dong-ye-wu-fen-xi/"/>
     <id>https://crossoverfish.github.io/2021/08/17/he-xin-huo-dong-ye-wu-fen-xi/</id>
     <published>2021-08-17T07:53:29.000Z</published>
-    <updated>2021-08-25T06:02:51.411Z</updated>
+    <updated>2021-09-04T10:02:37.491Z</updated>
     
     <summary type="html">
     
@@ -202,7 +250,7 @@
     <link href="https://crossoverfish.github.io/2021/08/16/yan-shi-xiao-xi/"/>
     <id>https://crossoverfish.github.io/2021/08/16/yan-shi-xiao-xi/</id>
     <published>2021-08-16T02:19:00.000Z</published>
-    <updated>2021-08-18T09:07:23.827Z</updated>
+    <updated>2021-09-01T03:37:22.272Z</updated>
     
     <summary type="html">
     
@@ -257,34 +305,6 @@
   </entry>
   
   <entry>
-    <title>md语法</title>
-    <link href="https://crossoverfish.github.io/2021/08/01/md-chang-yong-yu-fa/"/>
-    <id>https://crossoverfish.github.io/2021/08/01/md-chang-yong-yu-fa/</id>
-    <published>2021-08-01T08:08:48.000Z</published>
-    <updated>2021-08-18T01:24:10.364Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;一级标题&quot;&gt;&lt;a href=&quot;#一级标题&quot; class=&quot;headerlink&quot; title=&quot;一级标题&quot;&gt;&lt;/a&gt;一级标题&lt;/h1&gt;&lt;p&gt;==周小凤是个大傻子==&lt;/p&gt;
-&lt;h2 id=&quot;二级标题&quot;&gt;&lt;a href=&quot;#二级标题&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="md语法" scheme="https://crossoverfish.github.io/categories/md%E8%AF%AD%E6%B3%95/"/>
-    
-    
-      <category term="md" scheme="https://crossoverfish.github.io/tags/md/"/>
-    
-  </entry>
-  
-  <entry>
     <title>数据汇总按日分组统计</title>
     <link href="https://crossoverfish.github.io/2019/10/10/an-ri-fen-zu-wu-shu-ju-bu-0/"/>
     <id>https://crossoverfish.github.io/2019/10/10/an-ri-fen-zu-wu-shu-ju-bu-0/</id>
@@ -316,7 +336,7 @@
     <link href="https://crossoverfish.github.io/2019/10/03/fang-fa-de-can-shu-chuan-di-ji-zhi/"/>
     <id>https://crossoverfish.github.io/2019/10/03/fang-fa-de-can-shu-chuan-di-ji-zhi/</id>
     <published>2019-10-03T11:53:31.000Z</published>
-    <updated>2021-08-18T09:08:04.629Z</updated>
+    <updated>2021-08-31T07:38:09.852Z</updated>
     
     <summary type="html">
     

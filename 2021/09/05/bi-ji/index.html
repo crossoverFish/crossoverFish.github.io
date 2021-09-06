@@ -4,26 +4,23 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="md语法, crossoverFish">
+    <meta name="keywords" content="笔记, crossoverFish">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="一级标题==周小凤是个大傻子==
-二级标题周小凤
-三级标题周小凤
-四级标题周小凤
-五级标题周小凤
-六级标题
-Item 1
-Item 2
-Item 2a
-Item 2b
+    <meta name="description" content="[toc]
+1. mysql1. Mysql锁机制1.1 锁介绍
+只有「明确」指定主键，才会执行锁，否则将会执行表锁
 
 
+无锁
 
-正如 Kanye West 所说：
+单纯的查询(一致性非锁定读)，mysql不会加锁，会用mvcc的机制读取数据。
 
-We’re living t">
+
+行锁
+
+共享锁（S）：如果">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -31,7 +28,7 @@ We’re living t">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>md语法 | crossoverFish</title>
+    <title>笔记 | crossoverFish</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -330,13 +327,13 @@ We’re living t">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        md语法
+                        笔记
                     </div>
                 </div>
             </div>
@@ -446,24 +443,11 @@ We’re living t">
                 <div class="col s7">
                     
                     <div class="article-tag">
-                        
-                        <a href="/tags/md/" target="_blank">
-                            <span class="chip bg-color">md</span>
-                        </a>
-                        
+                        <span class="chip bg-color">无标签</span>
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fa fa-bookmark fa-fw icon-category"></i>
-                        
-                        <a href="/categories/md语法/" class="post-category" target="_blank">
-                            md语法
-                        </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -471,7 +455,7 @@ We’re living t">
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-01
+                    2021-09-05
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -485,7 +469,7 @@ We’re living t">
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    246
+                    428
                 </div>
                 
 
@@ -503,64 +487,51 @@ We’re living t">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><p>==周小凤是个大傻子==</p>
-<h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><p><code>周小凤</code></p>
-<h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><p><strong><em>周小凤</em></strong></p>
-<h4 id="四级标题"><a href="#四级标题" class="headerlink" title="四级标题"></a>四级标题</h4><p><em>周小凤</em></p>
-<h5 id="五级标题"><a href="#五级标题" class="headerlink" title="五级标题"></a>五级标题</h5><p>周小凤</p>
-<h6 id="六级标题"><a href="#六级标题" class="headerlink" title="六级标题"></a>六级标题</h6><ul>
-<li>Item 1</li>
-<li>Item 2<ul>
-<li>Item 2a</li>
-<li>Item 2b</li>
+                <p>[toc]</p>
+<h1 id="1-mysql"><a href="#1-mysql" class="headerlink" title="1. mysql"></a>1. mysql</h1><h2 id="1-Mysql锁机制"><a href="#1-Mysql锁机制" class="headerlink" title="1. Mysql锁机制"></a>1. Mysql锁机制</h2><h3 id="1-1-锁介绍"><a href="#1-1-锁介绍" class="headerlink" title="1.1 锁介绍"></a>1.1 锁介绍</h3><blockquote>
+<p>只有「明确」指定主键，才会执行锁，否则将会执行表锁</p>
+</blockquote>
+<ul>
+<li><p>无锁</p>
+<ul>
+<li>单纯的查询(一致性非锁定读)，mysql不会加锁，会用mvcc的机制读取数据。</li>
+</ul>
+</li>
+<li><p>行锁</p>
+<ul>
+<li>共享锁（S）：如果用select … lock in share mode;这种方式是加的s共享锁</li>
+<li>排它锁（X）： 如果用select … for update;这种方式加的x排他锁</li>
+</ul>
+</li>
+<li><p>表锁</p>
+<ul>
+<li>意向锁(IS/IX) : 表级别的锁,不需要逐行查验是否有行级锁。因为访问行级锁也是有一定开销的</li>
+</ul>
+</li>
+<li><p>锁兼容:</p>
+<p><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cimage-20210905230236152.png" alt="image-20210905230236152"></p>
+</li>
+</ul>
+<h3 id="1-2-加锁过程"><a href="#1-2-加锁过程" class="headerlink" title="1.2  加锁过程"></a>1.2  加锁过程</h3><ul>
+<li>主键索引:<ul>
+<li>在符合条件的记录上加上X锁</li>
+</ul>
+</li>
+<li>非主键唯一索引:<ul>
+<li>在符合条件的唯一索引的索引记录上加X锁，对应的聚簇索引的主键也加上X锁</li>
+</ul>
+</li>
+<li>非唯一索引:<ul>
+<li>Read Commit: 符合条件的索引记录上都加X锁，对应的聚簇索引的主键也加上X锁</li>
+<li>Repeatable Read: 符合条件的索引记录上都加K锁，对应的聚簇索引的主键也加上X锁，此外二级索引符合条件的记录前后间障会加Gap锁，防止幻读现象产生。</li>
 </ul>
 </li>
 </ul>
-<p>正如 Kanye West 所说：</p>
-<blockquote>
-<p>We’re living the future so<br>the present is our past.</p>
-</blockquote>
-<h2 id="如下，三个或者更多的"><a href="#如下，三个或者更多的" class="headerlink" title="如下，三个或者更多的"></a>如下，三个或者更多的</h2><h2 id="连字符"><a href="#连字符" class="headerlink" title="连字符"></a>连字符</h2><h2 id="星号"><a href="#星号" class="headerlink" title="星号"></a>星号</h2><p>我觉得你应该在这里使用<br><code>&lt;addr&gt;</code> 才对。</p>
-<pre class="line-numbers language-ruby"><code class="language-ruby"><span class="token keyword">require</span> <span class="token string">'redcarpet'</span>
-markdown <span class="token operator">=</span> <span class="token constant">Redcarpet</span><span class="token punctuation">.</span><span class="token keyword">new</span><span class="token punctuation">(</span><span class="token string">"Hello World!"</span><span class="token punctuation">)</span>
-puts markdown<span class="token punctuation">.</span>to_html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> x <span class="token operator">+</span> y
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> x <span class="token operator">+</span> y
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-javascript"><code class="language-javascript">a<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<pre class="line-numbers language-javascript"><code class="language-javascript">dsa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> @mentions, #refs, <a href="">links</a>, <strong>formatting</strong>, and <del>tags</del> supported</li>
-<li><input checked="" disabled="" type="checkbox"> list syntax required (any unordered or ordered list supported)</li>
-<li><input checked="" disabled="" type="checkbox"> this is a complete item</li>
-<li><input disabled="" type="checkbox"> this is an incomplete item</li>
-</ul>
-<p>[^1]: Hi! This is a footnote</p>
-<ul>
-<li>我爱周小凤<ul>
-<li>我</li>
-<li>爱</li>
-<li>周</li>
-<li>小</li>
-<li>凤</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>我 </li>
-<li>爱 </li>
-<li>周</li>
-<li>小</li>
-<li>凤 </li>
-</ol>
-<blockquote>
-<p>我爱周小凤</p>
-</blockquote>
-<p><em>我爱周小凤</em></p>
-<p><del>我爱周小凤</del><br><a href="https://www.jianshu.com/p/d1d6f6da103c" target="_blank" rel="noopener">百度链接</a>在哪里啊<br><img src="https://img1.baidu.com/it/u=197100022,1745471859&amp;fm=26&amp;fmt=auto&amp;gp=0.jpg" alt="图片地址"></p>
+<h1 id="标题2"><a href="#标题2" class="headerlink" title="标题2"></a>标题2</h1><p>标题2里的正文内容</p>
+<h2 id="标题2-1"><a href="#标题2-1" class="headerlink" title="标题2.1"></a>标题2.1</h2><p>标题2.1里的正文内容</p>
+<h3 id="标题2-1-1"><a href="#标题2-1-1" class="headerlink" title="标题2.1.1"></a>标题2.1.1</h3><p>标题2.1.1里的正文内容</p>
+<h3 id="标题2-1-2"><a href="#标题2-1-2" class="headerlink" title="标题2.1.2"></a>标题2.1.2</h3><p>标题2.1.2里的正文内容</p>
+<h2 id="标题2-2"><a href="#标题2-2" class="headerlink" title="标题2.2"></a>标题2.2</h2><p>标题2.2里的正文内容</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -737,9 +708,9 @@ puts markdown<span class="token punctuation">.</span>to_html<span aria-hidden="t
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《md语法》
+                    《笔记》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/01/md-chang-yong-yu-fa/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/09/05/bi-ji/" property="cc:attributionName"
                rel="cc:attributionURL">
                 crossoverFish
             </a> 采用
@@ -781,7 +752,7 @@ puts markdown<span class="token punctuation">.</span>to_html<span aria-hidden="t
         repo: 'crossoverFish.github.io',
         owner: 'crossoverFish',
         admin: "crossoverFish",
-        id: '2021/08/01/md-chang-yong-yu-fa/',
+        id: '2021/09/05/bi-ji/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -802,49 +773,48 @@ puts markdown<span class="token punctuation">.</span>to_html<span aria-hidden="t
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/08/09/dui-xiang-kao-bei-ceng-ji-bug/">
+                <a href="/2021/09/05/bi-ji/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="记一次使用fastjson拷贝对象的bug">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="笔记">
                         
-                        <span class="card-title">记一次使用fastjson拷贝对象的bug</span>
+                        <span class="card-title">笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            记一次使用fastjson拷贝对象的bug
+                            [toc]
+1. mysql1. Mysql锁机制1.1 锁介绍
+只有「明确」指定主键，才会执行锁，否则将会执行表锁
+
+
+无锁
+
+单纯的查询(一致性非锁定读)，mysql不会加锁，会用mvcc的机制读取数据。
+
+
+行锁
+
+共享锁（S）：如果
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-09
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-09-05
+                            </span>
                         <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/java/" class="post-category" target="_blank">
-                                    java
-                                </a>
-                            
                             
                         </span>
                     </div>
                 </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/bug/" target="_blank">
-                        <span class="chip bg-color">bug</span>
-                    </a>
-                    
-                </div>
+
                 
             </div>
         </div>
@@ -855,44 +825,35 @@ puts markdown<span class="token punctuation">.</span>to_html<span aria-hidden="t
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/10/10/an-ri-fen-zu-wu-shu-ju-bu-0/">
+                <a href="/2021/09/05/mysql-shi-wu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="数据汇总按日分组统计">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="mysql事务">
                         
-                        <span class="card-title">数据汇总按日分组统计</span>
+                        <span class="card-title">mysql事务</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            数据统计按日分组,没有补0
+                            测试幻读幻读在rr隔离级别下,因为mvcc机制,解决了读数据情况下的幻读问题 ,而对于修改的操作依旧存在幻读问题
+-- 事务隔离级别rr,关闭自动提交
+-- T1 第一步
+select *
+from user where id = 2;
+
+
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-10
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-09-05
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/业务/" class="post-category" target="_blank">
-                                    业务
-                                </a>
-                            
-                            
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/sql/" target="_blank">
-                        <span class="chip bg-color">sql</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -1045,7 +1006,7 @@ puts markdown<span class="token punctuation">.</span>to_html<span aria-hidden="t
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">8.1k</span>
+            <span class="white-color">9.9k</span>
             
 
             <br>

@@ -318,7 +318,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -508,7 +508,7 @@
 <h2 id="quartz定时扫描"><a href="#quartz定时扫描" class="headerlink" title="quartz定时扫描"></a>quartz定时扫描</h2><p>先看第一种，这类方式实现较为简单，只需要启动一个定时任务即可；但缺点同样也很明显，这个间隔扫描的时间不好控制。</p>
 <p>给短了会造成很多无意义的扫描，增大数据库压力，给长了又会使得误差较大。</p>
 <p>当然最大的问题还是效率较低，随着订单增多耗时会呈线性增长，最差的情况甚至会出现上一波轮询还没有扫描完，下一波调度又来了。</p>
-<p>这个问题在quartz里我是这么解决的<br>首先介绍下,在分布式定时任务中（或者集群），quartz能够保证同一时刻只会有一个定时任务运行。在Job的实现类上加这个注解@DisallowConcurrentExecution,它可以禁止并发执行多个相同定义的JobDetail,也就是上一个任务没有同时执行完,下个任务不会执行.这样就很大程度上避免了重复处理相同数据.<br>但其实还是有个明显的问题,比如说,业务执行到一半发生了异常,这个定时任务会一直未执行结束,不可能后面的任务一直在等,我们可以用Future这个接口,它提供了检查计算是否完成等方法.在指定时间内没有完成计算，则会抛出TimeoutException.这个时候我们可以处理这部分异常数据了.</p>
+<p>这个问题在quartz里我是这么解决的<br>首先介绍下,在分布式定时任务中（或者集群），quartz默认采取乐观锁,允许多个线程同时拉取同一个trigger。能够保证同一时刻只会有一个定时任务运行。在Job的实现类上加这个注解@DisallowConcurrentExecution,它可以禁止并发执行多个相同定义的JobDetail,也就是上一个任务没有同时执行完,下个任务不会执行.这样就很大程度上避免了重复处理相同数据.<br>但其实还是有个明显的问题,比如说,业务执行到一半发生了异常,这个定时任务会一直未执行结束,不可能后面的任务一直在等,我们可以用Future这个接口,它提供了检查计算是否完成等方法.在指定时间内没有完成计算，则会抛出TimeoutException.这个时候我们可以处理这部分异常数据了.</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">try</span> <span class="token punctuation">{</span>
             logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"------------MessageSendJob,发送定时任务开始------------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
             Future<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> future <span class="token operator">=</span> threadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span>
@@ -831,7 +831,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="活动业务分析">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="活动业务分析">
                         
                         <span class="card-title">活动业务分析</span>
                     </div>
@@ -869,7 +869,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="记一次使用fastjson拷贝对象的bug">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="记一次使用fastjson拷贝对象的bug">
                         
                         <span class="card-title">记一次使用fastjson拷贝对象的bug</span>
                     </div>
@@ -1055,7 +1055,7 @@
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">8.1k</span>
+            <span class="white-color">9.9k</span>
             
 
             <br>

@@ -319,7 +319,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -461,7 +461,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    961
+                    1k
                 </div>
                 
 
@@ -501,7 +501,7 @@
 <li>后端进行校验，校验成功会生成token, 把token发送给客户端</li>
 <li>客户端自己保存token, 再次请求就要在Http协议的请求头中带着token去访问服务端，和在服务端保存的token信息进行比对校验。</li>
 </ul>
-<p>token+redis： 是自己生成个32位的key，value为用户信息，访问时判断redis里是否有该token，如果有，则加载该用户信息完成登录。服务需要存储下发的每个token及对应的value，维持其过期时间，好处是随时可以删除某个token，阻断该token继续使用.缺点：每次都要进行redis查询。占用redis存储空间。</p>
+<p>token+redis： 是自己生成个32位的key，value为用户和token信息，访问时解析token拿到用户标识,判断redis里是否有该用户信息.如果有，比对用户token，验证成功加载该用户信息完成登录。服务需要存储下发的每个用户对应的token及身份信息，维持其过期时间，好处是随时可以删除某个token，阻断该token继续使用.缺点：每次都要进行redis查询。占用redis存储空间。</p>
 <p>JWT 验证流程：</p>
 <ul>
 <li>在头部信息中声明加密算法和常量， 然后把header使用json转化为字符串</li>
@@ -511,6 +511,7 @@
 </ul>
 <p>JWT: 生成并发给客户端之后，后台是不用存储，客户端访问时会验证其签名、过期时间等再取出里面的信息（如username），再使用该信息直接查询用户信息完成登录验证。jwt自带签名、过期等校验，后台不用存储，缺陷是一旦下发，服务后台无法拒绝携带该jwt的请求（如踢除用户）；</p>
 <p>token和jwt的区别:<br>服务端验证客户端发来的token信息要进行数据的查询操作；JWT验证客户端发来的token信息就不用， 在服务端使用密钥校验就可以，不用数据库的查询。</p>
+<p>refreshtoken:<br>refresh_token 就是用来刷新access_token 。活跃用户的 access_token 过期了，用refresh_token 获取 新的access_token 。</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -760,7 +761,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="过滤器和拦截器的区别">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="过滤器和拦截器的区别">
                         
                         <span class="card-title">过滤器和拦截器的区别</span>
                     </div>
@@ -797,7 +798,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="springSecurity源码学习">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="springSecurity源码学习">
                         
                         <span class="card-title">springSecurity源码学习</span>
                     </div>
@@ -989,7 +990,7 @@ UsernamePasswordAuthenticationFilter过滤器获取用户登录的信息,调用a
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">8.1k</span>
+            <span class="white-color">9.9k</span>
             
 
             <br>

@@ -315,7 +315,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -457,7 +457,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    942
+                    943
                 </div>
                 
 
@@ -630,7 +630,7 @@
  <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 </ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>为了让类的职责更加单一、代码更加清晰。这里运用了工厂模式，虽然代码量增加了，但是后期维护拓展会很方便，比较符合开闭原则。当然还有种思路，在枚举里维护api class和类型的关系。根据类型反射创建对象</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>为了让类的职责更加单一、代码更加清晰。这里运用了工厂模式，虽然代码量增加了，但是后期维护拓展会很方便，比较符合开闭原则。当然还有种思路，在枚举里维护api class和类型的关系。根据class对象获取容器对象</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -872,36 +872,40 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/08/23/li-yong-ce-lue-mo-shi-you-hua-tiao-jian-pan-duan/">
+                <a href="/2021/09/05/mysql-shi-wu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="利用策略模式优化条件判断">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="mysql事务">
                         
-                        <span class="card-title">利用策略模式优化条件判断</span>
+                        <span class="card-title">mysql事务</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            背景利用策略模式优化过多 if else 代码当业务场景比较复杂,如果if..else过多逻辑会很混乱,后期维护也比较头大,写着写着就会漏掉一些东西我们的业务场景有各种各样的活动组件,每个活动用户参与后可能会给用户发送一些短信或者微信模板消
+                            测试幻读幻读在rr隔离级别下,因为mvcc机制,解决了读数据情况下的幻读问题 ,而对于修改的操作依旧存在幻读问题
+-- 事务隔离级别rr,关闭自动提交
+-- T1 第一步
+select *
+from user where id = 2;
+
+
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-23
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-09-05
+                        </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
@@ -916,7 +920,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="过滤器和拦截器的区别">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="过滤器和拦截器的区别">
                         
                         <span class="card-title">过滤器和拦截器的区别</span>
                     </div>
@@ -1090,7 +1094,7 @@
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">8.1k</span>
+            <span class="white-color">9.9k</span>
             
 
             <br>
