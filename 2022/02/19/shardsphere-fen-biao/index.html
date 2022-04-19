@@ -4,11 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="超简单的session共享, crossoverFish">
+    <meta name="keywords" content="Shardsphere分表, crossoverFish">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="前言对于传统的单体服务,不存在session共享问题,但是在微服务架构下,session共享最简单的方式就是通过redis去实现,从redis中存取数据工作量还是比较大的,spring session使用spring的代理过滤器,将所有se">
+    <meta name="description" content="1 ShardSphere 简介
+Sharding-Sphere是一套开源的分布式数据库中间件,是Apache的顶级项目,支持数据分片、读写分离，同时兼容多种数据库，通过可插拔架构，理想情况下，可以做到对业务代码无感知。ShardingSp">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +17,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>超简单的session共享 | crossoverFish</title>
+    <title>Shardsphere分表 | crossoverFish</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -315,13 +316,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/26.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        超简单的session共享
+                        Shardsphere分表
                     </div>
                 </div>
             </div>
@@ -432,12 +433,8 @@
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/redis/" target="_blank">
-                            <span class="chip bg-color">redis</span>
-                        </a>
-                        
-                        <a href="/tags/spring-session/" target="_blank">
-                            <span class="chip bg-color">spring session</span>
+                        <a href="/tags/shard-jdbc/" target="_blank">
+                            <span class="chip bg-color">shard-jdbc</span>
                         </a>
                         
                     </div>
@@ -448,8 +445,12 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                        <a href="/categories/框架/" class="post-category" target="_blank">
-                            框架
+                        <a href="/categories/shard/" class="post-category" target="_blank">
+                            shard
+                        </a>
+                        
+                        <a href="/categories/shard/multi-source/" class="post-category" target="_blank">
+                            multi source
                         </a>
                         
                     </div>
@@ -460,7 +461,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-17
+                    2022-02-19
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -474,14 +475,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    468
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    5 分
                 </div>
                 
                 
@@ -492,69 +493,183 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对于传统的单体服务,不存在session共享问题,但是在微服务架构下,session共享最简单的方式就是通过redis去实现,从redis中存取数据工作量还是比较大的,spring session使用spring的代理过滤器,将所有session拦截下来.自动同步到redis中</p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li><p>创建一个springboot工程,引入Web,Spring Session,Redis,pom文件如下</p>
-<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
-     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
-     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-web<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
-     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.session<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-session-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+                <h1 id="1-ShardSphere-简介"><a href="#1-ShardSphere-简介" class="headerlink" title="1 ShardSphere 简介"></a>1 ShardSphere 简介</h1><blockquote>
+<p>Sharding-Sphere是一套开源的分布式数据库中间件,是Apache的顶级项目,支持数据分片、读写分离，同时兼容多种数据库，通过可插拔架构，理想情况下，可以做到对业务代码无感知。<br>ShardingSphere下有两款成熟的产品：sharding jdbc和sharding proxy。</p>
+</blockquote>
+<h1 id="2-背景"><a href="#2-背景" class="headerlink" title="2 背景"></a>2 背景</h1><blockquote>
+<p>系统上线后发现埋点表和接口日志表2天的数据量就已经300万的数据了,单表数据量太大且持续增长,查询操作非常耗时,决定使用分表中间件：ShardingSphere。</p>
+</blockquote>
+<h1 id="3-需求"><a href="#3-需求" class="headerlink" title="3 需求"></a>3 需求</h1><ul>
+<li>集成多数据源</li>
+<li>分表可配置分片周期</li>
+<li>动态建表</li>
+<li>支持分片表变更表结构</li>
+</ul>
+<h1 id="4-实现方式"><a href="#4-实现方式" class="headerlink" title="4 实现方式"></a>4 实现方式</h1><ul>
+<li>使用dynamic-datasource-spring-boot-starter组件集成多数据源,将不参与分表的数据源独立于Shardsphere之外,<strong>对分表的SQL使用sharding jdbc数据源，对不涉及到分表的SQL，使用普通数据源。</strong></li>
+<li>使用标准分片策略对日期精准分片 ,对于范围日期条件,支持范围分片查询</li>
+<li>项目初始化缓存所有分片表名,对于分片表名,如果缓存匹配不上,需要新建分片表</li>
+<li>可在 td_activity_param 表配置分片表原始表结构,后台执行建表语句</li>
+</ul>
+<h1 id="5-集成-sharding-jdbc"><a href="#5-集成-sharding-jdbc" class="headerlink" title="5 集成 sharding jdbc"></a>5 集成 sharding jdbc</h1><ul>
+<li><p>引入依赖</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>  
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.shardingsphere<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>  
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>sharding-jdbc-spring-boot-starter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>  
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>4.1.1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>  
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>配置多数据源和分片规则</p>
+<pre class="line-numbers language-yml"><code class="language-yml">spring:
+datasource:
+  dynamic:
+    datasource:
+      master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://10.20.16.74:3306/wo2b2c?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&useTimezone=true&rewriteBatchedStatements=true
+        username: wo2b2c
+        password: wo2b2c
+        initialSize: 4
+        minIdle: 4
+        maxActive: 30
+        testWhileIdle: true
+        timeBetweenEvictionRunsMillis: 90000
+        minEvictableIdleTimeMillis: 180000
+        removeAbandoned: true
+        name: core-master
+        connectionInitSqls: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci
+      slave-one:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: oracle.jdbc.OracleDriver
+        url: jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 130.51.9.114)(PORT = 1521)))(CONNECT_DATA = (SERVICE_NAME = ngprm)))
+        username: GD_UCR_SALE_CEN
+        password: oRaCle2jUn16_cL
+        maxActive: 30
+        minIdle: 4
+        initialSize: 4
+        testWhileIdle: true
+        timeBetweenEvictionRunsMillis: 90000
+        minEvictableIdleTimeMillis: 180000
+        poolPreparedStatements: true
+        removeAbandoned: true
+        connectionPropertie: oracle.net.CONNECT_TIMEOUT=6000;oracle.jdbc.ReadTimeout=30000
+        keepAlive: true
+    primary: master
+shardingsphere:
+  shard-cycle: "{tf_t_out_record: 5, tf_sm_user_clicking_rate: 10}"
+  props:
+    sql.show: true
+  datasource:
+    names: source-one
+    source-one:
+      type: com.alibaba.druid.pool.DruidDataSource
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://10.20.16.74:3306/wo2b2c?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&useTimezone=true
+      username: wo2b2c
+      password: wo2b2c
+  sharding:
+    default-data-source-name: source-one
+    tables:
+      tf_t_out_record:
+        actualDataNodes: source-one.tf_t_out_record
+        tableStrategy:
+          standard:
+            shardingColumn: start_time
+            preciseAlgorithmClassName: com.ai.market.core.multidatasource.shard.DateShardingAlgorithm
+            range-algorithm-class-name: com.ai.market.core.multidatasource.shard.DateShardingAlgorithm
+      tf_sm_user_clicking_rate:
+        actualDataNodes: source-one.tf_sm_user_clicking_rate
+        tableStrategy:
+          standard:
+            shardingColumn: sysdate
+            preciseAlgorithmClassName: com.ai.market.core.multidatasource.shard.DateShardingAlgorithm
+            range-algorithm-class-name: com.ai.market.core.multidatasource.shard.DateShardingAlgorithm              <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>集成多数据源</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Lazy</span>  
+<span class="token annotation punctuation">@Resource</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"shardingDataSource"</span><span class="token punctuation">)</span>  
+AbstractDataSourceAdapter shardingDataSource<span class="token punctuation">;</span>  
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<p>@Bean<br>public DynamicDataSourceProvider dynamicDataSourceProvider() {<br>    Map&lt;String, DataSourceProperty&gt; datasourceMap = dynamicDataSourceProperties.getDatasource();<br>    return new AbstractDataSourceProvider() {<br>        @Override<br>        public Map&lt;String, DataSource&gt; loadDataSources() {<br>            Map&lt;String, DataSource&gt; dataSourceMap = createDataSourceMap(datasourceMap);<br>            dataSourceMap.put(SHARDING_DATA_SOURCE_NAME, shardingDataSource);<br>            return dataSourceMap;<br>        }<br>    };<br>}</p>
+<p>@Primary<br>@Bean<br>public DataSource dataSource(DynamicDataSourceProvider dynamicDataSourceProvider) {<br>    DynamicRoutingDataSource dataSource = new DynamicRoutingDataSource();<br>    dataSource.setPrimary(dynamicDataSourceProperties.getPrimary());<br>    dataSource.setStrict(dynamicDataSourceProperties.getStrict());<br>    dataSource.setStrategy(dynamicDataSourceProperties.getStrategy());<br>    dataSource.setProvider(dynamicDataSourceProvider);<br>    dataSource.setP6spy(dynamicDataSourceProperties.getP6spy());<br>    dataSource.setSeata(dynamicDataSourceProperties.getSeata());<br>    return dataSource;<br>}</p>
+<pre><code>- 初始化缓存所有分片表名
+```java
+public static void tableNameCacheReload(String schemaName) {  
+    String tableExistKey = RedisKeyUtil.getTableExistList();  
+    List&lt;String&gt; tableNameList = shardMapper.getAllTableNameBySchema(schemaName);  
+    RedisUtil.KeyOps.delete(tableExistKey);  
+    RedisUtil.ListOps.leftPushAll(tableExistKey, tableNameList);  
+}</code></pre><ul>
+<li>标准分片策略精准分片算法<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Override</span>  
+<span class="token keyword">public</span> String <span class="token function">doSharding</span><span class="token punctuation">(</span>Collection<span class="token operator">&lt;</span>String<span class="token operator">></span> availableTargetNames<span class="token punctuation">,</span> PreciseShardingValue<span class="token operator">&lt;</span>Date<span class="token operator">></span> preciseShardingValue<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+  Date date <span class="token operator">=</span> preciseShardingValue<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Sharding input:"</span> <span class="token operator">+</span> date<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  String logicTableName <span class="token operator">=</span> preciseShardingValue<span class="token punctuation">.</span><span class="token function">getLogicTableName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  String suffix <span class="token operator">=</span> <span class="token function">getSuffixBySpecifyCycle</span><span class="token punctuation">(</span>logicTableName<span class="token punctuation">,</span> date<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  <span class="token keyword">return</span> <span class="token function">shardingTablesCheckAndCreatAndReturn</span><span class="token punctuation">(</span>logicTableName<span class="token punctuation">,</span> logicTableName<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>suffix<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<p>}</p>
+<pre><code>
 
-     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
-     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
- <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p>配置文件</p>
-<pre class="line-numbers language-properties"><code class="language-properties"><span class="token attr-name">spring.redis.host</span><span class="token punctuation">=</span><span class="token attr-value">127.0.0.1</span>
-<span class="token attr-name">spring.redis.password</span><span class="token punctuation">=</span><span class="token attr-value">123456</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-<li><p>Idea中启动多个端口进行访问<br><img src="/images/Idea%E5%A4%9A%E7%AB%AF%E5%8F%A3%E5%90%AF%E5%8A%A8.png" alt="这边我设置的是9091,9092俩个端口模拟集群"></p>
-</li>
-<li><p>nginx配置</p>
-<pre class="line-numbers language-conf"><code class="language-conf"># 简单说明下上游服务器tyu.com负载到9091和9092这俩个端口,weight 表示服务的权重
-upstream tyu.com {
-     #ip_hash;
-     server 127.0.0.1:9091 weight=1;
-     server 127.0.0.1:9092 weight=2;
- }
-location / {
-         proxy_pass   http://tyu.com/;
-         proxy_redirect default;
-     }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p>测试</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SessionDemoController</span> <span class="token punctuation">{</span>
- <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${server.port}"</span><span class="token punctuation">)</span>
- Integer port<span class="token punctuation">;</span>
+- 获取分片表名
+```java
+protected String getSuffixBySpecifyCycle(String logicTableName, Date date) {  
+    Integer specifyInterval = ShardingAlgorithmTool.shardCycleMap.get(logicTableName);  
+    if (Objects.isNull(specifyInterval)) {  
+        specifyInterval = this.defaultCycle;  
+    }  
+    NumberFormat nf = NumberFormat.getInstance();  
+    nf.setMinimumIntegerDigits(2);  
+    Calendar calendar = Calendar.getInstance();  
+    calendar.setTime(date);  
+    int currentMonth = calendar.get(Calendar.MONTH) + 1;  
+    int currentDate = calendar.get(Calendar.DAY_OF_MONTH);  
+    int cycleDate = currentDate % specifyInterval == 0 ? (currentDate / specifyInterval - 1) * specifyInterval + 1 : (currentDate / specifyInterval) * specifyInterval + 1;  
+    String concatTableName = "_".concat(nf.format(currentMonth)).concat("_").concat(nf.format(cycleDate));  
+    return concatTableName;  
+}</code></pre><ul>
+<li><p>不存在自动建表,这里参考了双重检查的思想,存在则返回,不存在才加锁再次校验,避免并发重复建表的错误</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">shardingTablesCheckAndCreatAndReturn</span><span class="token punctuation">(</span>String logicTableName<span class="token punctuation">,</span> String resultTableName<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+  logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"logicTableName:[{}],resultTableName:[{}]"</span><span class="token punctuation">,</span> logicTableName<span class="token punctuation">,</span> resultTableName<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  String tableExistKey <span class="token operator">=</span> RedisKeyUtil<span class="token punctuation">.</span><span class="token function">getTableExistList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  List tableExistList <span class="token operator">=</span> RedisUtil<span class="token punctuation">.</span>ListOps<span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span>tableExistKey<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>tableExistList<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>resultTableName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+      <span class="token keyword">return</span> resultTableName<span class="token punctuation">;</span>  
+  <span class="token punctuation">}</span>  
 
- <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/set"</span><span class="token punctuation">)</span>
- <span class="token keyword">public</span> String <span class="token function">setSession</span><span class="token punctuation">(</span>HttpSession session<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-     session<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span><span class="token string">"tyu"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     <span class="token keyword">return</span> String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>port<span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token punctuation">}</span>
-
- <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/get"</span><span class="token punctuation">)</span>
- <span class="token keyword">public</span> String <span class="token function">getSession</span><span class="token punctuation">(</span>HttpSession session<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-     <span class="token keyword">return</span> session<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> port<span class="token punctuation">;</span>
- <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/images/n1.png" alt="往session塞值"><br><img src="/images/n2.png" alt="去get session的值"><br><img src="/images/n3.png" alt="去get session的值"><br>往92塞值,可以发现91,92这俩个端口都能get到值</p>
+  String simpleUUID <span class="token operator">=</span> IdUtil<span class="token punctuation">.</span><span class="token function">fastSimpleUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  String lockKey <span class="token operator">=</span> RedisKeyUtil<span class="token punctuation">.</span><span class="token function">getTableExistKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>  
+      <span class="token keyword">boolean</span> lock <span class="token operator">=</span> RedisUtil<span class="token punctuation">.</span>LockOps<span class="token punctuation">.</span><span class="token function">getLock</span><span class="token punctuation">(</span>lockKey<span class="token punctuation">,</span> simpleUUID<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>lock<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+          tableExistList <span class="token operator">=</span> RedisUtil<span class="token punctuation">.</span>ListOps<span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span>tableExistKey<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>tableExistList<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>resultTableName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+              <span class="token keyword">return</span> resultTableName<span class="token punctuation">;</span>  
+          <span class="token punctuation">}</span>  
+          String createTableSql <span class="token operator">=</span> shardMapper<span class="token punctuation">.</span><span class="token function">selectTableCreateSql</span><span class="token punctuation">(</span>logicTableName<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+          logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"createTableSql:{}"</span><span class="token punctuation">,</span> JSONObject<span class="token punctuation">.</span><span class="token function">toJSONString</span><span class="token punctuation">(</span>createTableSql<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+          createTableSql <span class="token operator">=</span> createTableSql<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">"CREATE TABLE"</span><span class="token punctuation">,</span> <span class="token string">"CREATE TABLE IF NOT EXISTS"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+          createTableSql <span class="token operator">=</span> createTableSql<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>logicTableName<span class="token punctuation">,</span> resultTableName<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+          <span class="token keyword">this</span><span class="token punctuation">.</span>shardMapper<span class="token punctuation">.</span><span class="token function">executeSql</span><span class="token punctuation">(</span>createTableSql<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+          RedisUtil<span class="token punctuation">.</span>ListOps<span class="token punctuation">.</span><span class="token function">leftPush</span><span class="token punctuation">(</span>tableExistKey<span class="token punctuation">,</span> resultTableName<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+      <span class="token punctuation">}</span>  
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+      logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"建表异常:"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>  
+      RedisUtil<span class="token punctuation">.</span>LockOps<span class="token punctuation">.</span><span class="token function">releaseLock</span><span class="token punctuation">(</span>lockKey<span class="token punctuation">,</span> simpleUUID<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  <span class="token punctuation">}</span>  
+  <span class="token keyword">return</span> resultTableName<span class="token punctuation">;</span>  
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>SSM 架构中使用 Spring Session ,要配置三个地方 ，一个是 web.xml 配置代理过滤器，然后在 Spring 容器中配置 Redis，最后再配置 Spring Session，步骤还是有些繁琐的，而 Spring Boot 中直接帮我们省去了这些繁琐的步骤！不用再去配置 Spring Session。</p>
+</ul>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -731,9 +846,9 @@ location / {
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《超简单的session共享》
+                    《Shardsphere分表》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2021/08/17/chao-jian-dan-de-session-gong-xiang/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2022/02/19/shardsphere-fen-biao/" property="cc:attributionName"
                rel="cc:attributionURL">
                 crossoverFish
             </a> 采用
@@ -775,7 +890,7 @@ location / {
         repo: 'crossoverFish.github.io',
         owner: 'crossoverFish',
         admin: "crossoverFish",
-        id: '2021/08/17/chao-jian-dan-de-session-gong-xiang/',
+        id: '2022/02/19/shardsphere-fen-biao/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -800,44 +915,31 @@ location / {
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/08/18/bi-ji/easyexcel/">
+                <a href="/2022/03/22/bi-ji/ssm/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="easyexcel">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">easyexcel</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            前言Java解析、生成Excel比较有名的框架有Apache poi、jxl。但他们都存在一个严重的问题就是非常的耗内存，poi有一套SAX模式的API可以一定程度的解决一些内存溢出的问题，但POI还是有一些缺陷，比如07版Excel解压缩
+                            [TOC]
+1. spring集成web环境applicationContext应用上下文获取方式
+Spring提供了一个监听器ContextLoaderListener,监听器内部加载spring配置文件,创建应用上下文对象,并存储到se
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-18
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-03-22
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/框架/" class="post-category" target="_blank">
-                                    框架
-                                </a>
-                            
-                            
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/easyexcel/" target="_blank">
-                        <span class="chip bg-color">easyexcel</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -849,28 +951,34 @@ location / {
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/08/17/bi-ji/he-xin-huo-dong-ye-wu-fen-xi/">
+                <a href="/2021/09/05/bi-ji/bi-ji/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="活动业务分析">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="笔记">
                         
-                        <span class="card-title">活动业务分析</span>
+                        <span class="card-title">笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            砍价活动用户发起砍价，其他用户接受砍价邀请并完成砍价操作,砍价完成以后，可前往订单页面依据砍价后的最终产品价格并进行下单支付
+                            [toc]
+1. mysql1. Mysql锁机制1.1 锁介绍 
 
-团长选择商品发起砍价,创建拼团记录.
-团长可以自砍一刀,砍价成功后,生成砍价好友榜,展示帮砍记录
-团长生成二维码
+无锁
+
+单纯的查询(一致性非锁定读)，mysql不会加锁，会用mvcc的机制读取数据。
+
+
+行锁(锁定粒度小,加锁慢,容易出现死锁,并发度最高)
+
+记录锁存在于包括主键索
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-08-17
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2021-09-05
                             </span>
                         <span class="publish-author">
                             

@@ -41,6 +41,35 @@
   </entry>
   
   <entry>
+    <title>Shardsphere分表</title>
+    <link href="https://crossoverfish.github.io/2022/02/19/shardsphere-fen-biao/"/>
+    <id>https://crossoverfish.github.io/2022/02/19/shardsphere-fen-biao/</id>
+    <published>2022-02-19T09:38:46.000Z</published>
+    <updated>2022-04-19T09:58:13.923Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;1-ShardSphere-简介&quot;&gt;&lt;a href=&quot;#1-ShardSphere-简介&quot; class=&quot;headerlink&quot; title=&quot;1 ShardSphere 简介&quot;&gt;&lt;/a&gt;1 ShardSphere
+        
+      
+    
+    </summary>
+    
+    
+      <category term="shard" scheme="https://crossoverfish.github.io/categories/shard/"/>
+    
+      <category term="multi source" scheme="https://crossoverfish.github.io/categories/shard/multi-source/"/>
+    
+    
+      <category term="shard-jdbc" scheme="https://crossoverfish.github.io/tags/shard-jdbc/"/>
+    
+  </entry>
+  
+  <entry>
     <title>笔记</title>
     <link href="https://crossoverfish.github.io/2021/09/05/bi-ji/bi-ji/"/>
     <id>https://crossoverfish.github.io/2021/09/05/bi-ji/bi-ji/</id>
