@@ -481,14 +481,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    6 分
                 </div>
                 
                 
@@ -580,7 +580,15 @@
 </li>
 <li><p>订单过期不删除，查询订单，对过期时间作校验，如果过期则删除，缺点如果一直不访问订单，则库存一直无法回滚</p>
 </li>
+<li><p>redis实现延迟队列</p>
+</li>
 </ol>
+<ul>
+<li>向job池put一个元数据,状态是不可消费</li>
+<li>以jobId作为value，delayTime作为score 存到多个bucket延迟桶 中,提高扫描速度，降低消息延迟.</li>
+<li>多线程扫描归属bucket 中的最接近当前时间的延迟数据,如果当前时间超过延迟时间,区分是超时重试任务还是延迟任务,如果是超时任务,判断是否超过最大重试次数,如果超过就删除延迟桶中的数据,同时将元数据置为搁置状态,以便问题追踪.如果没有,就跟延迟任务一样处理,将元数据置为待消费状态,搬运桶中数据到准备队列.删除延迟桶中数据</li>
+<li>消费端消费准备队列数据,将元数据置为已消费状态,同时设定TTR,重新计算延迟时间,放入延迟桶.处理完成后,删除元数据,并且要删除延迟桶中ttr的数据,防止消息延迟重复消息的产生</li>
+</ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>延时任务实现的方式还是很多的,如果有现成的组件直接用就可以了,比如rocketmq,它自带处理延时消息的功能。如果不行,结合自己业务,技术栈,选择合适的方式.</p>
 <script>
         document.querySelectorAll('.github-emoji')
@@ -1055,7 +1063,7 @@
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">25k</span>
+            <span class="white-color">25.2k</span>
             
 
             <br>
