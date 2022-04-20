@@ -475,7 +475,7 @@ Sharding-Sphere是一套开源的分布式数据库中间件,是Apache的顶级�
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    382
+                    417
                 </div>
                 
 
@@ -510,6 +510,14 @@ Sharding-Sphere是一套开源的分布式数据库中间件,是Apache的顶级�
 <li>使用标准分片策略对日期精准分片 ,对于范围日期条件,支持范围分片查询</li>
 <li>项目初始化缓存所有分片表名,对于分片表名,如果缓存匹配不上,需要新建分片表</li>
 <li>可在 td_activity_param 表配置分片表原始表结构,后台执行建表语句</li>
+</ul>
+<h2 id="集成-sharding-jdbc"><a href="#集成-sharding-jdbc" class="headerlink" title="集成 sharding jdbc"></a>集成 sharding jdbc</h2><ul>
+<li>引入依赖<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>  
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.shardingsphere<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>  
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>sharding-jdbc-spring-boot-starter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>  
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>4.1.1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>  
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
 </ul>
 <script>
         document.querySelectorAll('.github-emoji')
