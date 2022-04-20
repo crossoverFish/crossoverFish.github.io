@@ -468,7 +468,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    5 分
                 </div>
                 
                 
@@ -507,7 +507,25 @@
 <p>JWT: 生成并发给客户端之后，后台是不用存储，客户端访问时会验证其签名、过期时间等再取出里面的信息（如username），再使用该信息直接查询用户信息完成登录验证。jwt自带签名、过期等校验，后台不用存储，缺陷是一旦下发，服务后台无法拒绝携带该jwt的请求（如踢除用户）；</p>
 <p>token和jwt的区别:<br>服务端验证客户端发来的token信息要进行数据的查询操作；JWT验证客户端发来的token信息就不用， 在服务端使用密钥校验就可以，不用数据库的查询。</p>
 <p>access_token和refresh_token双令牌无感知登录:<br>access_token<br>由后端颁发给前台,一般采用对称加密算法,可以反向解析出参数信息,如:用户ID,失效时间等<br>refresh_token<br>它的作用就是避免让用户重复输入账号密码登录再次验证<br>使用<br>一般我们可以将access_token的过期时间设置为2小时的，refresh_token的过期时间设置为1个月，然后用户第一次进来，用了一段时间access_token过期了，过期后前端携带refresh_token去获取新的access_token，返回的新的access_token依旧是2小时，那么除此之外，refresh_token自身再刷新一次，刷新一次后他还是1个月的过期时间(不累加)，这就保证了用户在一个月内只要访问了应用，就可以享受无感知的体验.<br>为什么不直接把accesstoken设长一店<br>access_token 泄露概率比较大,毕竟每次api请求都附带它,如果单独把 access_token 过期时间设置过长,一旦泄露,就相当于密码泄露<br>refresh_token 泄露概率比较小,只有每次access_token 失效时才会使用它,所以二者组合可以很好的避免token泄露带来的安全风险,同时又能保证用户体验</p>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr />
 
@@ -967,7 +985,7 @@ UsernamePasswordAuthenticationFilter过滤器获取用户登录的信息,调用a
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">7.1k</span>
+            <span class="white-color">7.6k</span>
             
 
             <br>

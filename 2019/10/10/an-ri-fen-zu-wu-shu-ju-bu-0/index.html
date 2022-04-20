@@ -470,14 +470,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    630
+                    682
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
                 
@@ -538,7 +538,25 @@ List<span class="token operator">&lt;</span>Map<span class="token operator">></s
                     <span class="token keyword">group</span> <span class="token keyword">by</span> DATE_FORMAT<span class="token punctuation">(</span>o<span class="token punctuation">.</span>create_time<span class="token punctuation">,</span> <span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span>
     <span class="token punctuation">)</span> <span class="token number">b</span> <span class="token keyword">on</span> DATE_FORMAT<span class="token punctuation">(</span><span class="token number">a</span><span class="token punctuation">.</span>timeDay<span class="token punctuation">,</span> <span class="token string">'%Y/%m/%d'</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">b</span><span class="token punctuation">.</span>dayTime <span class="token keyword">order</span> <span class="token keyword">by</span> <span class="token number">a</span><span class="token punctuation">.</span>timeDay            <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>没有一劳永逸的方案,持续尝试,才能写出更好的代码</p>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr />
 
@@ -1004,7 +1022,7 @@ List<span class="token operator">&lt;</span>Map<span class="token operator">></s
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">7.1k</span>
+            <span class="white-color">7.6k</span>
             
 
             <br>
