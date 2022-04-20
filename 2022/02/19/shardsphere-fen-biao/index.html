@@ -496,9 +496,7 @@ Sharding-Sphere是一套开源的分布式数据库中间件,是Apache的顶级�
                 <h1 id="1-ShardSphere-简介"><a href="#1-ShardSphere-简介" class="headerlink" title="1 ShardSphere 简介"></a>1 ShardSphere 简介</h1><blockquote>
 <p>Sharding-Sphere是一套开源的分布式数据库中间件,是Apache的顶级项目,支持数据分片、读写分离，同时兼容多种数据库，通过可插拔架构，理想情况下，可以做到对业务代码无感知。<br>ShardingSphere下有两款成熟的产品：sharding jdbc和sharding proxy。</p>
 </blockquote>
-<h1 id="2-背景"><a href="#2-背景" class="headerlink" title="2 背景"></a>2 背景</h1><blockquote>
-<p>系统上线后发现埋点表和接口日志表2天的数据量就已经300万的数据了,单表数据量太大且持续增长,查询操作非常耗时,决定使用分表中间件：ShardingSphere。</p>
-</blockquote>
+<h1 id="2-背景"><a href="#2-背景" class="headerlink" title="2 背景"></a>2 背景</h1><p>系统上线后发现埋点表和接口日志表2天的数据量就已经300万的数据了,单表数据量太大且持续增长,查询操作非常耗时,决定使用分表中间件：ShardingSphere。</p>
 <h1 id="3-需求"><a href="#3-需求" class="headerlink" title="3 需求"></a>3 需求</h1><ul>
 <li>集成多数据源</li>
 <li>分表可配置分片周期</li>
@@ -647,7 +645,8 @@ AbstractDataSourceAdapter shardingDataSource<span class="token punctuation">;</s
     <span class="token keyword">return</span> concatTableName<span class="token punctuation">;</span>  
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="不存在自动建表-这里参考了双重检查的思想-存在则返回-不存在才加锁再次校验-避免并发重复建表的错误"><a href="#不存在自动建表-这里参考了双重检查的思想-存在则返回-不存在才加锁再次校验-避免并发重复建表的错误" class="headerlink" title="不存在自动建表,这里参考了双重检查的思想,存在则返回,不存在才加锁再次校验,避免并发重复建表的错误"></a>不存在自动建表,这里参考了双重检查的思想,存在则返回,不存在才加锁再次校验,避免并发重复建表的错误</h2><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">shardingTablesCheckAndCreatAndReturn</span><span class="token punctuation">(</span>String logicTableName<span class="token punctuation">,</span> String resultTableName<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+<h2 id="不存在自动建表"><a href="#不存在自动建表" class="headerlink" title="不存在自动建表"></a>不存在自动建表</h2><p>这里参考了双重检查的思想,存在则返回,不存在才加锁再次校验,避免并发重复建表的错误</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">shardingTablesCheckAndCreatAndReturn</span><span class="token punctuation">(</span>String logicTableName<span class="token punctuation">,</span> String resultTableName<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
     logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"logicTableName:[{}],resultTableName:[{}]"</span><span class="token punctuation">,</span> logicTableName<span class="token punctuation">,</span> resultTableName<span class="token punctuation">)</span><span class="token punctuation">;</span>  
     String tableExistKey <span class="token operator">=</span> RedisKeyUtil<span class="token punctuation">.</span><span class="token function">getTableExistList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
     List tableExistList <span class="token operator">=</span> RedisUtil<span class="token punctuation">.</span>ListOps<span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span>tableExistKey<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
@@ -678,7 +677,6 @@ AbstractDataSourceAdapter shardingDataSource<span class="token punctuation">;</s
     <span class="token punctuation">}</span>  
     <span class="token keyword">return</span> resultTableName<span class="token punctuation">;</span>  
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>```</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
