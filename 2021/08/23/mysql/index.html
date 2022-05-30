@@ -527,7 +527,7 @@
 <h3 id="1-5-索引的结构"><a href="#1-5-索引的结构" class="headerlink" title="1.5 索引的结构"></a>1.5 索引的结构</h3><ul>
 <li><p>查找顺序: 加载磁盘到内存–&gt;二分查找确定指针–&gt;查找真实数据</p>
 </li>
-<li><p>B- 树: B-tree的关键字和记录是放在一起的，叶子节点不包含任何信息<br><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cb-tree.png" alt="b-tree"> </p>
+<li><p>B- 树: B-tree的关键字和记录是放在一起的，叶子节点不包含任何信息<br><img src="/images/b-tree.png" alt="b-tree"> </p>
 </li>
 <li><p>B+ 树</p>
 <ul>
@@ -538,7 +538,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cbtree.png" alt=" "> </p>
+<p><img src="/images/btree.png" alt=" "> </p>
 <h3 id="1-6-哪些情况建索引"><a href="#1-6-哪些情况建索引" class="headerlink" title="1.6 哪些情况建索引"></a>1.6 哪些情况建索引</h3><ul>
 <li>主键自动建立唯一索引</li>
 <li>频繁作为查询条件的字段应该创建索引</li>
@@ -633,7 +633,7 @@
 <h3 id="3-3-小表驱动大表"><a href="#3-3-小表驱动大表" class="headerlink" title="3.3 小表驱动大表"></a>3.3 小表驱动大表</h3><blockquote>
 <p>即小的数据集驱动大的数据集。</p>
 </blockquote>
-<p><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cimage-20220526181459133.png" alt="image-20220526181459133"> </p>
+<p><img src="/images/image-20220526181459133.png" alt="image-20220526181459133"> </p>
 <p>看以上两个for循环，总共循环的次数是一样的。但是对于mysql数据库而言，并不是这样了，我们尽量选择第②个for循环，也就是小表驱动大表。==数据库最伤神的就是跟程序连接和释放==，第一个建立了10000次链接，第二个建立了50次。假设连接了两次，每次做上百万次的数据集查询，查完就走，这样就只做了两次；相反建立了上百万次连接，申请连接释放反复重复，这样系统就受不了了。</p>
 <p>not in 和not exists如果查询语句使用了not in 那么内外表都进行全表扫描，没有用到索引；而not extsts 的子查询依然能用到表上的索引。所以无论那个表大，用not exists都比not in要快。</p>
 <ul>
@@ -694,7 +694,7 @@
 <li><p>creator_trx_id:ReadView创建者的事务编号</p>
 </li>
 </ul>
-<p><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cimage-20220527095036369.png" alt="image-20220527095036369"> </p>
+<p><img src="/images/image-20220527095036369.png" alt="image-20220527095036369"> </p>
 <h4 id="3-3-快照读和当前读"><a href="#3-3-快照读和当前读" class="headerlink" title="3.3 快照读和当前读"></a>3.3 快照读和当前读</h4><ul>
 <li><p>快照读就是最普通的Select查询SQL语句</p>
 </li>
@@ -702,7 +702,7 @@
 </li>
 </ul>
 <p>​        lnsert、Update、Delete、Select…for updateSelect…lock in share mode</p>
-<h1 id="锁介绍"><a href="#锁介绍" class="headerlink" title="锁介绍"></a>锁介绍</h1><p><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cimage-20211216103302545.png" alt="image-20211216103302545"> </p>
+<h1 id="锁介绍"><a href="#锁介绍" class="headerlink" title="锁介绍"></a>锁介绍</h1><p><img src="/images/image-20211216103302545.png" alt="image-20211216103302545"> </p>
 <h2 id="1-兼容性"><a href="#1-兼容性" class="headerlink" title="1. 兼容性"></a>1. 兼容性</h2><h3 id="1-1-共享锁"><a href="#1-1-共享锁" class="headerlink" title="1.1 共享锁"></a>1.1 共享锁</h3><p>加了S锁的记录，允许其他事务再加S锁，不允许其他事务再加X锁</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token keyword">table</span> <span class="token keyword">lock</span> <span class="token operator">in</span> <span class="token keyword">share mode</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="1-2-排它锁"><a href="#1-2-排它锁" class="headerlink" title="1.2  排它锁"></a>1.2  排它锁</h3><p>加了X锁的记录，不允许其他事务再加S锁或者X锁</p>
@@ -882,13 +882,13 @@
 </ul>
 <h3 id="4-4-死锁的排查与解决"><a href="#4-4-死锁的排查与解决" class="headerlink" title="4.4 死锁的排查与解决"></a>4.4 死锁的排查与解决</h3><p>1.查看正在锁的事务</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> INFORMATION_SCHEMA<span class="token punctuation">.</span>INNODB_LOCKS<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cimage-20220527160051538.png" alt="image-20220527160051538"> </p>
+<p><img src="/images/image-20220527160051538.png" alt="image-20220527160051538"> </p>
 <p>2.查看等待锁的事务</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> INFORMATION_SCHEMA<span class="token punctuation">.</span>INNODB_LOCK_WAITS<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cimage-20220527160115441.png" alt="image-20220527160115441"> </p>
+<p><img src="/images/image-20220527160115441.png" alt="image-20220527160115441"> </p>
 <p>3.查看在锁的事务</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> INFORMATION_SCHEMA<span class="token punctuation">.</span>INNODB_TRX<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cimage-20220527160133831.png" alt="image-20220527160133831"></p>
+<p><img src="/images/image-20220527160133831.png" alt="image-20220527160133831"></p>
 <p> 4.下面的查询可以得到当前状况下数据库的等待情况:</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> r<span class="token punctuation">.</span>trx_id wait_trx_id<span class="token punctuation">,</span>
 r<span class="token punctuation">.</span>trx_mysql_thread_id wait_thr_id<span class="token punctuation">,</span>
@@ -899,7 +899,7 @@ r<span class="token punctuation">.</span>trx_query wait_query<span class="token 
 <span class="token keyword">from</span> information_schema<span class="token punctuation">.</span>innodb_lock_waits w
 <span class="token keyword">inner</span> <span class="token keyword">join</span> information_schema<span class="token punctuation">.</span>innodb_trx <span class="token number">b</span> <span class="token keyword">on</span> <span class="token number">b</span><span class="token punctuation">.</span>trx_id <span class="token operator">=</span> w<span class="token punctuation">.</span>blocking_trx_id
 <span class="token keyword">inner</span> <span class="token keyword">join</span> information_schema<span class="token punctuation">.</span>innodb_trx r <span class="token keyword">on</span> r<span class="token punctuation">.</span>trx_id <span class="token operator">=</span>w<span class="token punctuation">.</span>requesting_trx_id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="E:%5Chexo%5Chexo-blog%5Csource%5Cimages%5Cimage-20220527163303911.png" alt="image-20220527163303911"></p>
+<p><img src="/images/image-20220527163303911.png" alt="image-20220527163303911"></p>
 <p>5.查看innodb状态(包含最近的死锁日志)</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">show</span> <span class="token keyword">engine</span> <span class="token keyword">innodb</span> <span class="token keyword">status</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>6.查询是否锁表</p>
